@@ -23,7 +23,7 @@ moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 moreTablesNames= crossTables summaryTables quantileskWh
 moreTablesFiles=$(addsuffix .txt,$(moreTablesNames))
 
-figures=$(hiresFiguresFiles) $(figuresFiles) $(moreFiguresFiles)
+figures=$(figuresFiles) $(moreFiguresFiles)
 tables=$(tablesFiles) $(moreTablesFiles)
 
 
@@ -44,7 +44,7 @@ powerLowUseMaps_3_kWh.png powerLowUseMaps_30_kWh.png: powerLowUseMaps.py
 .PHONY: clean cleaner
 
 clean:
-	-rm  $(figures) $(tables) $(imageSets)  2> /dev/null
+	-rm  $(hiresFiguresFiles)  $(figures) $(tables) $(imageSets)  2> /dev/null
 	-rm mosaics_*.png  2> /dev/null
 
 cleaner: clean

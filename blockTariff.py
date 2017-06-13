@@ -1,0 +1,59 @@
+# Statistics on energy poverty in Vietnam
+##
+# (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
+#
+#
+
+from VHLSS_importer import survey, plt, np
+
+print("""Answers to VHLSS 2010/2012/2014 surveys
+Multidimentional plot on what is energy poverty:
+Electricity used last month
+Electricity bill last month
+
+Period               2010/04   2012/04    2014/04
+First block tarif      600      993        993
+Second block tariff   1004     1242       1418
+""")
+
+
+def subfig(yr, n):
+    ax = fig.add_subplot(3, 1, n)
+    df = survey[['year', 'elec_last_month', 'kwh_last_month']].dropna()
+    df = df[df.year == yr]
+    plt.hexbin(df.kwh_last_month, df.elec_last_month,
+               bins='log', cmap='Greys',
+               gridsize=200
+               )
+    ax.set_title(str(yr), x=0.2, y=0.8)
+    ax.set_ylabel('kVND last month')
+    ax.set_xlim([0, 400])
+    ax.set_ylim([0, 600])
+    print('----------------------')
+    print(yr)
+    x = np.arange(50)
+    slope, intercept = np.polyfit(df.kwh_last_month[df.kwh_last_month <= 50],
+                                  df.elec_last_month[df.kwh_last_month <= 50],
+                                  1)
+    ax.plot(x, intercept + slope * x, color='red')
+    x = np.arange(50, 400)
+    print('First block price estimate', round(slope*1000), 'VND / kWh')
+    slope, intercept = np.polyfit(df.kwh_last_month[50 < df.kwh_last_month],
+                                  df.elec_last_month[50 < df.kwh_last_month],
+                                  1)
+    ax.plot(x, intercept + slope * x, color='blue')
+    print('Beyond first block price estimate', round(slope*1000), 'VND / kWh')
+    return ax
+
+
+fig = plt.figure(figsize=(6, 12))
+fig.suptitle("Increasing block tariff of electricity for households in Vietnam\nRed regression line, kWh <= 50 kWh\nBlue regression line, 50 < kWh < 400", fontsize=12)
+
+subfig(2010, 1)
+
+subfig(2012, 2)
+
+subfig(2014, 3).set_xlabel('kWh last month')
+
+
+plt.savefig('blockTariff.png')

@@ -4,3 +4,6 @@ Print table5
 Print table6
 
 Add highlights
+
+Debug Warning:  A value is trying to be set on a copy of a slice from a DataFrame.
+in summaryTables mosaics table_satisfaction  powerLowUseMaps

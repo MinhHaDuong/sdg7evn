@@ -12,7 +12,9 @@ DEBUG = False
 
 
 def lowUseRate(yr, provinceTinh):
-    usage = survey[(survey.year == yr) & (survey.tinh == provinceTinh)].kwh_last_month.dropna()
+    usage = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh),
+                       "kwh_last_month"
+                       ].dropna()
     NlowUsers = len(usage[usage <= lowkWhperMonth])
     Nresponses = len(usage)
     if DEBUG:
@@ -21,6 +23,7 @@ def lowUseRate(yr, provinceTinh):
         return NlowUsers / Nresponses
     else:
         return np.nan
+
 
 lowkWhperMonth = 3
 

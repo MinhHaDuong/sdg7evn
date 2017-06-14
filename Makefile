@@ -30,6 +30,9 @@ tables=$(tablesFiles) $(moreTablesFiles)
 imageSets=mosaics.txt
 
 
+defaut:
+	make -j5 all
+
 all: $(figures) $(tables) $(imageSets)
 
 %.png: %.py

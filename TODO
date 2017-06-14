@@ -3,7 +3,6 @@ Print table4
 Print table5
 Print table6
 
-Add highlights
+Run generates no warning
 
-Debug Warning:  A value is trying to be set on a copy of a slice from a DataFrame.
-in summaryTables mosaics table_satisfaction  powerLowUseMaps
+Remove opening the graphviz when running batch

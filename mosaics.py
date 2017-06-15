@@ -54,8 +54,7 @@ def sub_mosaic(position, year, column):
 
 fig = plt.figure(figsize=(15, 50))
 
-for i in range(num_cols):
-    column = cols.columns[i]
+for i, column in enumerate(cols):
     sub_mosaic(3 * i + 1, 2010, column)
     sub_mosaic(3 * i + 2, 2012, column)
     sub_mosaic(3 * i + 3, 2014, column)

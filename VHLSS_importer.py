@@ -7,6 +7,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -75,7 +76,8 @@ block_prices_alt = [0, 0, 1925, 1925, 1925, 2500, 2500, 3500, 3500]
 # https://www.gso.gov.vn/default_en.aspx?tabid=780
 # Monthly consumer price index by Months and Year
 # Year 2000 = 100
-CPI = pd.DataFrame([104.30, 107.60,	115.90, 125.50, 134.90, 146.30, 179.64, 192.00, 209.64, 248.60, 271.49, 289.41, 301.26, 303.16],
+CPI = pd.DataFrame([104.30, 107.60, 115.90, 125.50, 134.90, 146.30, 179.64, 192.00, 209.64, 248.60,
+                    271.49, 289.41, 301.26, 303.16],
                    index=pd.date_range('2002-01-01', periods=14, freq='A-JAN'),
                    columns=['Consumer_Price_Index']
                    )
@@ -84,6 +86,7 @@ CPI = pd.DataFrame([104.30, 107.60,	115.90, 125.50, 134.90, 146.30, 179.64, 192.
 #%%
 # Gini code lifted from :
 # https://planspacedotorg.wordpress.com/2013/06/21/how-to-calculate-gini-coefficient-from-raw-data-in-python/
+# See also:  https://en.wikipedia.org/wiki/Gini_coefficient#Calculation for less efficient code
 
 def gini(list_of_values):
     sorted_list = sorted(list_of_values)
@@ -93,18 +96,6 @@ def gini(list_of_values):
         area += height - value / 2
     fair_area = height * len(list_of_values) / 2
     return (fair_area - area) / fair_area
-
-
-# Not efficient alternative, usefull for double checking
-# https://en.wikipedia.org/wiki/Gini_coefficient#Calculation
-def relative_mean_absolute_difference(l):
-    n = len(l)
-    a = np.array(l)
-    den = 2 * n * sum(l)
-    num = 0
-    for i in np.nditer(a):
-        num += sum(abs(a - i))
-    return num / den
 
 
 #%%
@@ -119,3 +110,15 @@ provinceID1ByName = dict(zip(provinces.VARNAME_1, provinces.ID_1))
 
 provinceID1ByTinh = dict(zip(provinces.tinh, provinces.ID_1))
 provinceTinhByID1 = dict(zip(provinces.ID_1, provinces.tinh))
+
+#%%
+
+
+def timefunc(f):
+    def f_timer(*args, **kwargs):
+        start = time.time()
+        result = f(*args, **kwargs)
+        end = time.time()
+        print(f.__name__, 'took', end - start, 'time')
+        return result
+    return f_timer

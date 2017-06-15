@@ -37,8 +37,6 @@ DEBUG = False
 
 sf = shapefile.Reader(datadir + 'VNM_adm_shp/VNM_adm1')
 recs = sf.records()
-shapes = sf.shapes()
-Nshapes = len(shapes)
 provinceNames = [row[11] for row in recs]
 provinceNamesVN = [row[4] for row in recs]
 provinceNum = [row[3] for row in recs]
@@ -48,23 +46,22 @@ provinceNum = [row[3] for row in recs]
 # This is not a problem for coloring
 
 
-def mapTinh(f, ax, title):
-    colormap = get_cmap('Greys')
+def mapTinh(f, ax, title, colormap_name):
+    colormap = get_cmap(colormap_name)
 
-    rng = Nshapes if not DEBUG else 20
-    for i in range(rng):
+    for i, shape in enumerate(sf.shapes()):
         ptchs = []
-        pts = list(shapes[i].points)
-        prt = shapes[i].parts
+        pts = list(shape.points)
+        prt = shape.parts
         par = list(prt) + [len(pts)]
         tinh = provinceTinhByName[provinceNames[i]]
         stat = f(tinh)
         color = colormap(stat)
         ec = 'black'
-        # Use low ink density for finely contoured islands provinces
-        if i in {7, 25, 29, 31, 33, 50}: ec='lightgrey'
+        if i in {7, 25, 29, 31, 33, 50}:
+            ec = 'lightgrey'          # Lower ink density for finely contoured islands provinces
         for pij in range(len(prt)):
-            ptchs.append(Polygon(pts[par[pij]:par[pij+1]]))
+            ptchs.append(Polygon(pts[par[pij]:par[pij + 1]]))
             ax.add_collection(PatchCollection(ptchs,
                                               facecolor=color,
                                               edgecolor=ec,
@@ -81,12 +78,14 @@ def plotChoropleths(f, label, filename, years):
         fig = pyplot.figure(figsize=(18, 10), dpi=150)
     else:
         fig = pyplot.figure(figsize=(9, 5), dpi=50)
-    if DEBUG: years=[2008]
+    if DEBUG:
+        years = [2008]
+    colormap_name = 'Greys'
     for yr in years:
         ax = fig.add_subplot(1, len(years), years.index(yr) + 1)
-        mapTinh(lambda t: f(yr, t), ax, str(yr))
+        mapTinh(lambda t: f(yr, t), ax, str(yr), colormap_name)
     cbaraxes = fig.add_axes([0.05, 0.15, 0.02, 0.7])
-    cbar = colorbar.ColorbarBase(cbaraxes, cmap='Greys')
+    cbar = colorbar.ColorbarBase(cbaraxes, cmap=colormap_name)
     cbar.set_ticks([0., 0.2, 0.4, 0.6, 0.8, 1])
     cbar.set_ticklabels(['0%', '20%', '40%', '60%', '80%', '100%'])
     cbar.set_label(label)

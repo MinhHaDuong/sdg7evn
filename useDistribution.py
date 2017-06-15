@@ -23,7 +23,7 @@ def cdf(yr):
     print('The Gini index: was ', end='')
     print(round(100 * gini(sorted), 2), '\n')
     print(d.describe())
-#    print(100 * relative_mean_absolute_difference(sorted))
+
 
 cdf(2010)
 cdf(2012)

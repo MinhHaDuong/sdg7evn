@@ -11,19 +11,24 @@ from mapTinh import plotChoropleths
 DEBUG = False
 
 
+#%%
+
 def lowUseRate(yr, provinceTinh):
     usage = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh),
                        "kwh_last_month"
                        ].dropna()
-    NlowUsers = len(usage[usage <= lowkWhperMonth])
+    NlowUsers = (usage <= lowkWhperMonth).sum()
     Nresponses = len(usage)
     if DEBUG:
         print(provinceTinh, '\t', NlowUsers, '/', Nresponses)
-    if (Nresponses != 0):
-        return NlowUsers / Nresponses
-    else:
-        return np.nan
+    try:
+        ratio = NlowUsers / Nresponses
+    except ZeroDivisionError:
+        ratio = np.nan
+    return ratio
 
+
+#%%
 
 lowkWhperMonth = 30
 

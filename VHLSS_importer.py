@@ -47,10 +47,10 @@ survey.gender.cat.categories = ['Male', 'Female']
 
 #%%% Color scheme from colorbrewer2.org
 
-curve_style = {2014: ('#b30000', 'solid'),
-               2012: ('#e34a33', 'dashed'),
-               2010: ('#fc8d59', 'dashdot'),
-               2008: ('#fdcc8a', 'solid')
+curve_style = {2014: {'color': '#b30000', 'linestyle': 'solid'},
+               2012: {'color': '#e34a33', 'linestyle': 'dashed'},
+               2010: {'color': '#fc8d59', 'linestyle': 'dashdot'},
+               2008: {'color': '#fdcc8a', 'linestyle': 'solid'}
                }
 
 

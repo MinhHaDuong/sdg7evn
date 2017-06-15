@@ -20,7 +20,7 @@ def cdf(yr, ax, deflate):
     d = survey[survey.year == yr].elec_year.dropna() / 12 * deflator
     sorted = d.sort_values()
     yvals = np.arange(1, len(sorted) + 1) / float(len(sorted))
-    ax.step(sorted, yvals, color=curve_style[yr][0], linestyle=curve_style[yr][1])
+    ax.step(sorted, yvals, **curve_style[yr])
     print('\nIn year', yr, 'the fraction of households who declared')
     print('having spend less than 100 kVND on electricity on average month was ', end='')
     print(round(100 * (len(d[d <= 100]) + len(d[d < 100])) / 2 / len(d), 1), '%\n')

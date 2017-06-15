@@ -13,7 +13,7 @@ def cdf(yr):
     d = survey[survey.year == yr].kwh_last_month.dropna()
     sorted = d.sort_values()
     yvals = np.arange(1, len(sorted) + 1) / float(len(sorted))
-    plt.step(sorted, yvals, color=curve_style[yr][0], linestyle=curve_style[yr][1])
+    plt.step(sorted, yvals, **curve_style[yr])
 
 
 plt.axis([0, 350, 0, 1])

@@ -24,7 +24,7 @@ def cdf(yr):
 #    print(round(len(x[x >= 0.1]) / N * 100, 1))
 
     yvals = np.arange(1, N + 1) / N
-    plt.step(sorted, yvals, color=curve_style[yr][0], linestyle=curve_style[yr][1])
+    plt.step(sorted, yvals, **curve_style[yr])
 
 plt.axis([0, 0.1, 0, 1])
 

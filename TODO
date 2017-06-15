@@ -3,6 +3,10 @@ Print table4
 Print table5
 Print table6
 
-Run generates no warning
-
 Remove opening the graphviz when running batch
+
+Run generates warning:
+
+/usr/local/lib/python3.5/dist-packages/statsmodels/graphics/mosaicplot.py:39: RuntimeWarning: invalid value encountered in less
+  if np.any(proportion < 0):
+

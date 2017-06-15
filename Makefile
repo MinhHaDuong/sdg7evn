@@ -12,7 +12,7 @@ hiresFiguresFiles = $(addsuffix .pdf,$(hiresFiguresNames)) $(addsuffix -300dpi.p
 figuresNames = blockTariff elec_yearbyIncome kWhbyIncome powerGridMaps prices unsatisfactionMaps KPIDiagram
 figuresFiles = $(addsuffix .png,$(figuresNames) $(hiresFiguresNames))
 
-tablesNames = incomeShare KPI table_satisfaction table_TariffWinners table_TariffLIHC
+tablesNames = incomeShare table_KPI table_satisfaction table_TariffWinners table_TariffLIHC
 tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 

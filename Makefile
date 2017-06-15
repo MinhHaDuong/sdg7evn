@@ -17,7 +17,7 @@ tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 
 # Exploratory data visualization
-moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation powerLowUseMaps_3_kWh powerLowUseMaps_30_kWh
+moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation powerLowUseMaps mosaics
 moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 
 moreTablesNames= crossTables summaryTables quantileskWh
@@ -25,9 +25,6 @@ moreTablesFiles=$(addsuffix .txt,$(moreTablesNames))
 
 figures=$(figuresFiles) $(moreFiguresFiles)
 tables=$(tablesFiles) $(moreTablesFiles)
-
-
-imageSets=mosaics.txt
 
 
 defaut:
@@ -38,17 +35,14 @@ all: $(figures) $(tables) $(imageSets)
 %.png: %.py
 	$(PYTHON) $^
 
-powerLowUseMaps_3_kWh.png powerLowUseMaps_30_kWh.png: powerLowUseMaps.py
-	$(PYTHON) $^
-
 %.txt: %.py
 	$(PYTHON) $^ > $@
 
 .PHONY: clean cleaner
 
 clean:
-	-rm  $(hiresFiguresFiles)  $(figures) $(tables) $(imageSets)  2> /dev/null
-	-rm mosaics_*.png  2> /dev/null
+	-rm  $(hiresFiguresFiles) $(figures) $(tables) $(imageSets)  2> /dev/null
 
 cleaner: clean
 	-rm -rf __pycache__/  2> /dev/null
+

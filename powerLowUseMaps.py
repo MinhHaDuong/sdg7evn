@@ -25,16 +25,9 @@ def lowUseRate(yr, provinceTinh):
         return np.nan
 
 
-lowkWhperMonth = 3
-
-plotChoropleths(lowUseRate,
-                'Households using less than 3 kWh in previous month',
-                'powerLowUseMaps_3_kWh.png',
-                [2010, 2012, 2014])
-
 lowkWhperMonth = 30
 
 plotChoropleths(lowUseRate,
-                'Households using less than 30 kWh in previous month',
-                'powerLowUseMaps_30_kWh.png',
+                'Households using less than " + str(lowkWhperMonth) + " kWh in previous month',
+                'powerLowUseMaps.png',
                 [2010, 2012, 2014])

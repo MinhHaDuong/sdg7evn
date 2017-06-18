@@ -14,10 +14,6 @@ block_sizes = np.diff(block_limits)
 #%%
 
 
-#df = survey[['year', 'kwh_last_month']]
-household_use = survey[survey.year == 2014].kwh_last_month.dropna()
-
-
 def plot_block_tariff(ax, col, block_prices):
     ax.step(block_limits, block_prices, color=col)
     ax.set_ylim([0, 3550])
@@ -55,9 +51,9 @@ survey[survey.year == 2014].hist(column='kwh_last_month',
                                  ax=add_panel,
                                  bins=block_limits,
                                  color='grey')
-add_panel.set_title('Number of households per block (N='+
-                    str(len(household_use))+
-                    ')')
+
+add_panel.set_title('Number of households per block (N={:d})'.format(
+                    survey.loc[survey.year == 2014, 'kwh_last_month'].count()))
 
 top_panel.set_xticks(block_limits)
 top_panel.set_xlim([0, 550])

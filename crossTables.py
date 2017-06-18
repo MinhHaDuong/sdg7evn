@@ -15,55 +15,62 @@ been sufficient to meet needs over the last 30 days?
 
 categoricalColumns = survey.select_dtypes(include=['category'])
 
-# en_subsidy is a binned integer
+survey["grid_presence"].cat.remove_categories('Missing', inplace=True)
 
 
 def crosstable(column, yr):
     print('---------------------------------------------------------')
     print(column, yr)
-    df = survey.loc[survey.year == yr, ['elec_poor', column]]
-    df.elec_poor = df.elec_poor.cat.remove_categories(['Missing', 'Idk'])
-    if (column == 'grid_presence'):
-        df.loc[:, column] = df.loc[:, column].cat.remove_categories('Missing')
-    df = df.dropna()
-    if all(df.loc[:, column].isnull()):
-        print('No data')
-        return
-    print('\nContingency table:')
-    table = pd.crosstab(df.elec_poor, df.loc[:, column], margins=True)
-    print(table)
-    print('\nProportions')
-    print(table / table.ix["All"])
-    print('\nIndependance ?')
-    chi2, p, dof, ex = chi2_contingency(table.drop('All').drop('All', 1))
-    print('Chi2 =', chi2)
-    print('p-value =', p)
-    print('degrees of freedom =', dof)
+    try:
+        print('\nContingency table:')
+        table = pd.crosstab(survey.Q12[survey.year == yr], survey.loc[survey.year == yr, column],
+                            margins=True)
+        print(table)
+        print('\nProportions (%)')
+        print(100 * table / table.ix["All"])
+        print('\nIndependance ?')
+        chi2, p, dof, ex = chi2_contingency(table.drop('All').drop('All', 1))
+        print('Chi2 =', chi2)
+        print('p-value =', p)
+        print('degrees of freedom =', dof)
 #    print('Expected proportions =\n', ex)
 #    print('\n')
-#   tableNoMargin.transpose().plot(kind='bar', figsize=(8, 8), stacked=True)
+    except ValueError:
+        print('ValueError: No data I presume.')
+    finally:
+        print()
+#%%
 
 
-for column in categoricalColumns.drop(['elec_poor', 'en_subsidy'], axis=1):
+for column in categoricalColumns.drop(['elec_poor', 'Q12', 'en_subsidy', 'block'], axis=1):
     crosstable(column, 2008)
     crosstable(column, 2010)
     crosstable(column, 2012)
     crosstable(column, 2014)
     print('\n')
 
-print('Column True is respondents who declared using 0 kWh last month')
-print('Column False is NA or respondents who declared using >0 kWh last month')
+print('''
+**********************
+***   Non users    ***
+**********************
+
+=========================================================
+Column True is respondents who declared using 0 kWh last month
+Column False is NA or respondents who declared using >0 kWh last month
+''')
 for column in categoricalColumns.drop(['elec_poor', 'en_subsidy'], axis=1):
-    print('\n')
+    print('')
     print(pd.crosstab(survey.loc[:, column], [survey.kwh_last_month == 0],
                       margins=True))
 
 
-print('\n\n')
-print('Column True is respondents who declared paying 0 VND last month')
-print('Column False is NA or respondents who declared using >0 kWh last month')
+print('''
+=========================================================
+Column True is respondents who declared paying 0 VND last month
+Column False is NA or respondents who declared using >0 kWh last month
+''')
 for column in categoricalColumns.drop(['elec_poor', 'en_subsidy'], axis=1):
-    print('\n')
+    print('')
     print(pd.crosstab(survey.loc[:, column], [survey.elec_last_month == 0],
                       margins=True))
 

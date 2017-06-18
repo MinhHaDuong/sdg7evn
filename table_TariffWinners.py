@@ -14,31 +14,34 @@ for different definitions of energy poor
 """
 
 from VHLSS_importer import np, survey
-from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt 
+from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt
 
 block_sizes = np.diff(block_limits)
 
 block_costs_2013 = block_sizes * block_prices_2013[1:] / 1000
 total_bills_2013 = np.cumsum(np.insert(block_costs_2013, 0, 0))
 
-block_costs_alt = block_sizes * block_prices_alt[1:]/ 1000
+block_costs_alt = block_sizes * block_prices_alt[1:] / 1000
 total_bills_alt = np.cumsum(np.insert(block_costs_alt, 0, 0))
 
 
-#%% 
-df = survey.loc[survey.year == 2014, ['inc', 'kwh_last_month', 'elec_last_month',
-                                      'elec_poor', 'inc_pov', 'size', 'urb_rur']]
+#%%
+
+df = survey.loc[(survey.year == 2014) & (survey.elec_poor.notnull()),
+                ['inc', 'kwh_last_month', 'elec_last_month',
+                'elec_poor', 'inc_pov', 'size', 'urb_rur']]
 df['bill_alt'] = np.interp(df.elec_last_month, total_bills_2013, total_bills_alt)
 df['change'] = df.bill_alt - df.elec_last_month
 
-df['high_cost'] = df.elec_last_month / (df.inc/12) > 0.06
-df['high_cost_expost'] = df.bill_alt / (df.inc/12) > 0.06
+df['high_cost'] = df.elec_last_month / (df.inc / 12) > 0.06
+df['high_cost_expost'] = df.bill_alt / (df.inc / 12) > 0.06
 
 df['income_percapita_permonth'] = df.inc / df.loc[:, "size"] / 12
 
 df['low_income'] = df.income_percapita_permonth < 400 + 100 * (df.urb_rur == 'Urban')
 
 #%%
+
 
 def impact_categories(query_expr):
     winners = len(df.query(query_expr + ' and change < 0'))
@@ -47,10 +50,11 @@ def impact_categories(query_expr):
     total = len(df.query(query_expr))
     n = df.count().inc
     return "{:5d} ({:.1f}%)\t{:5d} ({:.1f}%)\t{:5d} ({:.1f}%)\t{:5d} ({:.1f}%)".format(
-    winners, 100 * winners / n,
-    unaffected, 100 * unaffected / n,
-    loosers, 100 * loosers / n,
-    total, 100 * total / n)
+           winners, 100 * winners / n,
+           unaffected, 100 * unaffected / n,
+           loosers, 100 * loosers / n,
+           total, 100 * total / n)
+
 
 if __name__ == '__main__':
     print("Define 'High costs' declaring an electricity bill last month > 6% annual income / 12")

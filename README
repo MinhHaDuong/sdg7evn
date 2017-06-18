@@ -3,7 +3,7 @@ README
 This python code analyzes VHLSS results regarding to energy poverty.
 
 Requirements:
-  Python3 with SciPy stack (pandas, numpy, matplotlib, matplotlib_venn, statsmodels)
+  Python3 with SciPy stack (pandas >= 18.1, numpy, matplotlib, matplotlib_venn, statsmodels)
   make
   Preprocessed VHLSS data located in   ../data/Processed_data
   Shapefiles for Vientam provinces located in  ../data/VNM_adm_shp

@@ -44,7 +44,27 @@ survey.elec_presence.cat.categories = ['Present', 'Absent']
 survey.inc_pov.cat.categories = ['Yes', 'No']
 survey.rent.cat.categories = ['Pay', 'DoNoPay']
 survey.gender.cat.categories = ['Male', 'Female']
+survey["Q12"] = survey.elec_poor.cat.remove_categories(['Missing', 'Idk'])
 
+#%% Energy poverty criteria
+
+survey["year2014"] = (survey.year == 2014)
+
+survey["off_grid"] = (survey.main_light.isin(['Local_Elec', 'Flame', 'Other']))
+
+survey["low_use"] = (survey.kwh_last_month <= 30)
+
+survey["lacking"] = (survey.elec_poor == 'Lacking')
+
+survey["high_cost"] = (survey.elec_last_month / (survey.inc / 12) > 0.06)
+
+survey["effort"] = survey.elec_year / survey.inc
+
+survey["high_cost_year"] = (survey.effort > 0.06)
+
+survey["LIHC"] = (survey.high_cost) & (survey.inc_pov == 'Yes')
+
+survey["subsidized"] = (survey.en_subsidy > 0)
 
 #%%% Color scheme from colorbrewer2.org
 
@@ -62,6 +82,8 @@ electricity_tariffs = pd.read_csv(datadir + 'Processed_data/elec_price.csv',
                                   index_col=[0])
 
 block_limits = [0, 30, 50, 100, 150, 200, 300, 400, 10000]
+
+survey["block"] = pd.cut(survey.kwh_last_month, [-0.1] + block_limits)
 
 # The 2013 tariff didn't use the block at 30 kWh, have to add it
 tariff_2013 = electricity_tariffs.ix['2013-08-01']

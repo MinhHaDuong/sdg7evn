@@ -10,9 +10,9 @@ from VHLSS_importer import survey, np, pd
 def printout(column):
     counts = pd.crosstab(survey[column], survey.year, margins=True)
     print(counts, '\n')
-    # normalize='column' only available in Pandas 18.1
-    frequencies = 100 * counts / counts.ix["All"]
-    print(np.round(frequencies, 1))
+    print("%")
+    counts = pd.crosstab(survey[column], survey.year, margins=True, normalize='columns')
+    print(np.round(100 * counts, 2), '\n')
 
 
 #%%
@@ -24,8 +24,7 @@ Q12. Has consumption of electricity [....] been sufficient to meet needs over th
 (translation from form Muc08_1Bnew in the 2010 wave)
 """)
 
-survey["Q12"] = survey.elec_poor.cat.remove_categories(['Missing', 'Idk']).dropna()
-printout('Q12')
+printout('elec_poor')
 
 #%%
 
@@ -41,8 +40,6 @@ printout('main_light')
 #%%
 
 print("""
--------------------- Power use last month by tariff block ---------------
+-------------------- Power use last month by block ---------------
 """)
-blocks = [-1000, -0.001, 0, 0.001, 30, 50, 100, 150, 200, 300, 400, 3000, 30000]
-survey["elec_use"] = pd.cut(survey.kwh_last_month, blocks)
-printout('elec_use')
+printout('block')

@@ -4,36 +4,53 @@
 #
 #
 
-from VHLSS_importer import survey, pd
+from VHLSS_importer import survey
 from scipy.stats import percentileofscore
 
-df = survey[['year','elec_poor','kwh_last_month']]
-df.elec_poor = df.elec_poor.cat.remove_categories(['Missing', 'Idk'])
-df = df.dropna()
-e = df.kwh_last_month[survey.year == 2014]
+#TODO
+# FIX TABLE 4
+# FIX Makefile for Table 4
+# Discuss wrt 30 kwh not 22
 
-def desc(serie):
-    return serie.describe(percentiles = [0.05, 0.25, 0.5, 0.75, 0.95])
+all_households = survey.loc[survey.year2014, 'kwh_last_month']
+lacking_households = all_households.loc[survey.lacking]
+lt30_households = all_households.loc[survey.low_use]
+hicost_households = all_households.loc[survey.high_cost]
 
-table = pd.DataFrame(
-[desc(e),
- desc(e[survey.elec_poor == 'Lacking']),
- desc(e[survey.elec_poor != 'Lacking'])
- ])
+print("       Households \tAll      \tNot sufficient electricity")
+print("                  \tn = {:d}\tn = {:d}".format(
+      all_households.count(), lacking_households.count()
+      ))
 
-print(table)
+print("Electricity use last month")
 
-medPoor = e[survey.elec_poor == 'Lacking'].median()
-numPoor = round(len(e[survey.elec_poor == 'Lacking'])/2)
-print('\nHalf of the self-declared electricity poors households used less than', medPoor, 'kWh in the month')
-print('That is', numPoor, 'respondents')
+print("Median            \t{:.0f} kWh   \t{:.0f} kWh".format(
+      all_households.median(), lacking_households.median()
+      ))
 
-p = percentileofscore(e, medPoor)
-numSober = round(p * len(e)/100)
-print('\n', p, 'percent of respondents used less than that')
-print('That is', numSober, 'respondents')
+print("50% interquartile \t{:.0f}-{:.0f} kWh   \t{:.0f}-{:.0f} kWh".format(
+      all_households.quantile(0.25), all_households.quantile(0.75),
+      lacking_households.quantile(0.25), lacking_households.quantile(0.75)
+      ))
+
+print("90% interquartile \t{:.0f}-{:.0f} kWh   \t{:.0f}-{:.0f} kWh".format(
+      all_households.quantile(0.05), all_households.quantile(0.95),
+      lacking_households.quantile(0.05), lacking_households.quantile(0.95)
+      ))
+
+print()
+medPoor = lacking_households.median()
+numPoor = lacking_households.count() // 2
+print('\nHalf of the self-declared electricity poors households used less than',
+      medPoor, 'kWh in the month')
+print('That is', numPoor, 'respondents\n')
+
+p = percentileofscore(all_households, medPoor)
+numSober = round(p * all_households.count() / 100)
+print('Among all households, {:.1f} percent of respondents used less than that'.format(p))
+print('That is {:.0f} respondents\n'.format(numSober))
 
 odd = (numSober - numPoor) / numPoor
 
-print('Among the households using less than',medPoor,'kWh last month,')
-print('For one who declares lacking electricity,', odd, 'declare having enough')
+print('Among the households using less than', medPoor, 'kWh last month,')
+print('For one who declares lacking electricity, {:.1f} declare having enough'.format(odd))

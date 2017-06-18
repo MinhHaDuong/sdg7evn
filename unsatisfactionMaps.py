@@ -12,15 +12,24 @@ DEBUG = False
 
 
 def unsatisfaction(yr, provinceTinh):
-    responses = survey[(survey.year == yr) & (survey.tinh == provinceTinh)].elec_poor.dropna()
-    unsatisfied = len(responses[responses == 'Lacking'])
-    Nresponses = len(responses)
+    responses = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh), 'elec_poor']
+    unsatisfied = responses[survey.lacking].count()
+    Nresponses = responses.count()
     if DEBUG:
         print(provinceTinh, '\t', unsatisfied, '/', Nresponses)
-    if (Nresponses != 0):
+    if Nresponses:
         return unsatisfied / Nresponses
     else:
         return np.nan
+
+
+# Test
+assert unsatisfaction(2008, 0) is np.nan
+assert unsatisfaction(2010, 15) == 54 / 114
+assert unsatisfaction(2012, 25) == 17 / 156
+assert unsatisfaction(2014, 12) == 45 / 240
+
+#%%
 
 plotChoropleths(unsatisfaction,
                 "%Responses 'Power needs were not met last month'",

@@ -9,9 +9,8 @@ Created on Fri Jun  9 16:21:58 2017
 
 from VHLSS_importer import survey, pd
 
-survey["Q12"] = survey.elec_poor.cat.remove_categories(['Missing', 'Idk'])
-counts = pd.crosstab(survey['Q12'], survey.year, margins=True)
 
+counts = pd.crosstab(survey['Q12'], survey.year, margins=True)
 
 def freq(reply, year):
     total = counts.loc['All', year]

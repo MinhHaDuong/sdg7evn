@@ -11,72 +11,64 @@ from matplotlib import gridspec
 
 #%%
 
+# Subsampling to Q12 respondents does not change much the
+# percentages for off_grid, low_use, high_cost
 
-d = pd.DataFrame(
-    {'grid': survey[survey.year == 2014].main_light.dropna() == 'Main_Grid',
-     'lacking': survey[survey.year == 2014].elec_poor.dropna() == 'Lacking',
-     'low_kwh': survey[survey.year == 2014].kwh_last_month.dropna() <= 30,
-     'big_effort': survey[survey.year == 2014].elec_year.dropna() / survey.inc.dropna() > 0.06,
-     'subsidized': survey[survey.year == 2014].en_subsidy.dropna() > 0}
-     )
+data = survey[(survey.year == 2014) & survey.elec_poor.notnull()]
 
-print('Year 2014')
-print('=========')
-print('Respondents not using the main grid for lighting')
-off_grid = d[d.grid == False].astype(str)
-print('N =', len(off_grid))
-print(off_grid.groupby(['low_kwh']).size())
-print(off_grid.groupby(['low_kwh', 'lacking']).size())
 
+def num_poors(column, definition):
+    answers = data.loc[:, column].count()
+    poors = data.loc[definition, column].count()
+    return "\t{:.1f}%\t{:d}\t{:d}".format(100 * poors / answers, poors, answers)
+
+
+print("Energy poverty criteria in 2014, Vietnam Households having answered Q12")
 print()
-print('Respondents using the main grid for lighting')
+print("Criteria                               \tShare\tMatches\tAnswers")
 
-on_grid = d[d.grid == True].astype(str)
-print('N=', len(on_grid))
-print(on_grid.groupby(['low_kwh']).size())
-print(on_grid.groupby(['low_kwh', 'lacking']).size())
-print(on_grid.groupby(['low_kwh', 'lacking', 'big_effort']).size())
-print(on_grid.groupby(['low_kwh', 'lacking', 'big_effort', 'subsidized']).size())
+print("Did not use main grid for lighting     " + num_poors("main_light", survey.off_grid))
+print("Used less than 30 kWh last month       " + num_poors("kwh_last_month", survey.low_use))
+print("Electricity expenses > 6% income       " + num_poors("effort", survey.high_cost))
+print("Low income High cost                   " + num_poors("effort", survey.LIHC))
+print("Electricity did not meet needs         " + num_poors("elec_poor", survey.lacking))
+print("Received electricity subsidy           " + num_poors("en_subsidy", survey.subsidized))
 
-print()
-print('Respondents using the main grid for lighting, dropping NaN')
+#%%
 
-on_grid = d[d.grid == True]
-print('N=', len(on_grid))
-print(on_grid.groupby(['low_kwh']).size())
-print(on_grid.groupby(['low_kwh', 'lacking']).size())
-print(on_grid.groupby(['low_kwh', 'lacking', 'big_effort']).size())
-print(on_grid.groupby(['low_kwh', 'lacking', 'big_effort', 'subsidized']).size())
-
-
-english = {'low_kwh': 'Used <30kWh',
+english = {'low_use': 'Used <30kWh',
            'lacking': 'Needs not met',
-           'big_effort': 'Bill > 6% income',
+           'high_cost': 'Bill > 6% income',
+           'LIHC': 'Low income high cost',
            'subsidized': 'Subsidized'}
 
-def cover2(col1, col2, axe):
-    gb = d[d.grid == True].groupby([col1, col2]).size()
-    venn2(subsets = (gb[1,0], gb[0,1], gb[1,1]), set_labels=([english[col1], english[col2]]), ax=axe)
+
+def cover_two(col1, col2, axe):
+    gb = data.groupby([col1, col2]).size()
+    venn2(subsets=(gb[1, 0], gb[0, 1], gb[1, 1]),
+          set_labels=([english[col1], english[col2]]), ax=axe)
+
 
 def cover3(col1, col2, col3, axe):
-    gb = d[d.grid == True].groupby([col1, col2, col3]).size()
-    print(gb)
-    venn3(subsets = (gb[1,0,0], gb[0,1,0], gb[1,1,0], gb[0,0,1], gb[1,0,1], gb[0,1,1], gb[1,1,1]),
+    gb = data.groupby([col1, col2, col3]).size()
+#    print(gb)
+    venn3(subsets=(gb[1, 0, 0], gb[0, 1, 0], gb[1, 1, 0], gb[0, 0, 1],
+                   gb[1, 0, 1], gb[0, 1, 1], gb[1, 1, 1]),
           set_labels=([english[col1], english[col2], english[col3]]), ax=axe)
-    axe.text(-0.6, -0.5, 'All other: '+str(gb[0,0,0])+' replies')
+    axe.text(-0.6, -0.5, 'All other: ' + str(gb[0, 0, 0]) + ' replies')
     return sum(gb)
 
 
 fig = plt.figure(figsize=(10, 10))
-gs = gridspec.GridSpec(4,3)
+gs = gridspec.GridSpec(6, 2)
 
+cover_two('subsidized', 'low_use', fig.add_subplot(gs[4, 1]))
+cover_two('subsidized', 'lacking', fig.add_subplot(gs[4, 0]))
+cover_two('subsidized', 'high_cost', fig.add_subplot(gs[5, 0]))
+cover_two('subsidized', 'LIHC', fig.add_subplot(gs[5, 1]))
 
-cover2('subsidized', 'lacking', fig.add_subplot(gs[3,0]))
-cover2('subsidized', 'big_effort', fig.add_subplot(gs[3,1]))
-cover2('subsidized', 'low_kwh', fig.add_subplot(gs[3,2]))
+n = cover3('low_use', 'lacking', 'LIHC', fig.add_subplot(gs[0:4, :]))
 
-n = cover3('low_kwh', 'lacking', 'big_effort', fig.add_subplot(gs[0:3,:]))
-
-fig.suptitle('The energy poverty criteria are not correlated\nVietnam 2014 survey, N='+str(n)+" households", fontsize=18)
+fig.suptitle('Energy poverty in Vietnam Households 2014 survey\n(n=' + str(n) + ")", fontsize=18)
 
 fig.savefig('KPIDiagram.png')

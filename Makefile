@@ -9,7 +9,7 @@ hiresFiguresNames = ECDspending ECDuse TariffCompared
 hiresFiguresFiles = $(addsuffix .pdf,$(hiresFiguresNames)) $(addsuffix -300dpi.png,$(hiresFiguresNames))
 
 # Also used in the paper
-figuresNames = blockTariff elec_yearbyIncome kWhbyIncome powerGridMaps prices unsatisfactionMaps KPIDiagram
+figuresNames = blockTariff figure_highexpense kWhbyIncome powerGridMaps prices unsatisfactionMaps KPIDiagram
 figuresFiles = $(addsuffix .png,$(figuresNames) $(hiresFiguresNames))
 
 tablesNames = incomeShare table_KPI table_satisfaction table_TariffWinners table_TariffLIHC
@@ -17,7 +17,7 @@ tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 
 # Exploratory data visualization
-moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation powerLowUseMaps mosaics
+moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation powerLowUseMaps
 moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 
 moreTablesNames= crossTables summaryTables quantileskWh

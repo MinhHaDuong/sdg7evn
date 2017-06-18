@@ -4,24 +4,24 @@
 #
 #
 
-from VHLSS_importer import survey, plt
+"""Exploring VHLSS 2010/2012/2014 survey results, about on energy poverty
 
-print("""Answers to VHLSS 2010/2012/2014 surveys
 Multidimentional plot on what is energy poverty:
-Electricity bill last month / income last month
+Annual electricity expenses / annual income
 Household size
-""")
+
+Red: electricity needs not met
+Blue: all others
+"""
+
+from VHLSS_importer import survey, plt
 
 
 def subfig(yr):
-    df = survey[['year', 'elec_last_month', 'inc', 'size', 'elec_poor']]
-    df = df[df.year == yr]
-    x = df.elec_last_month[df.elec_poor != 'Lacking'] / df.inc[df.elec_poor != 'Lacking']
-    y = df.loc[df.elec_poor != 'Lacking', 'size']
-    plt.scatter(x, y)
-    x = df.elec_last_month[df.elec_poor == 'Lacking'] / df.inc[df.elec_poor == 'Lacking']
-    y = df.loc[df.elec_poor == 'Lacking', 'size']
-    plt.scatter(x, y, color='red', alpha=0.3)
+    x = survey.loc[survey.year == yr, 'effort']
+    y = survey.loc[survey.year == yr, 'size']
+    plt.scatter(x[~survey.lacking], y[~survey.lacking], color='blue')
+    plt.scatter(x[survey.lacking], y[survey.lacking], color='red', alpha=0.3)
 
 
 fig = plt.figure(figsize=(6, 12))
@@ -51,11 +51,7 @@ plt.close(fig)
 
 #%%
 from pandas.tools.plotting import radviz
-fig = plt.figure(figsize=(10, 10))
 
-df = survey[[ 'elec_last_month', 'inc', 'size', 'elec_poor', 'sq_m']]
-df.elec_poor = df.elec_poor.cat.remove_categories(['Missing', 'Idk', 'Plenty'])
-df = df[survey.year == 2014].dropna()
-radviz(df, 'elec_poor')
-plt.show(fig)
-plt.close(fig)
+plt.figure(figsize=(10, 10))
+radviz(survey.loc[survey.year == 2014, ['elec_last_month', 'inc', 'size', 'Q12', 'sq_m']].dropna(),
+       'Q12')

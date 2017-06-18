@@ -7,21 +7,20 @@
 #
 
 
-from VHLSS_importer import survey, gini, pd
-
-pd.set_option('precision', 0)
+from VHLSS_importer import survey, gini
+from scipy.stats import percentileofscore
 
 
 def cdf(yr):
-    d = survey[survey.year == yr].kwh_last_month.dropna()
-    sorted = d.sort_values()
-    print('\nIn year', yr, 'the fraction of households who declared ')
-    print('having used less than 50 kWh on electricity in the previous month was ', end='')
-    print(round(100 * (len(d[d <= 50]) + len(d[d < 50])) / 2 / len(d), 1), '%')
-    print('having used less than 100 kWh on electricity in the previous month was ', end='')
-    print(round(100 * (len(d[d <= 100]) + len(d[d < 100])) / 2 / len(d), 1), '%')
-    print('The Gini index: was ', end='')
-    print(round(100 * gini(sorted), 2), '\n')
+    d = survey.loc[survey.year == yr, 'kwh_last_month'].dropna()
+    print('\nIn year {:d} the Gini index was {:.1f}'.format(
+          yr, 100 * gini(d)))
+    print('The fraction of households who declared they used')
+    print('... less than 50 kWh on electricity in the previous month was {:.1f}%'.format(
+          percentileofscore(d, 50)))
+    print('... less than 100 kWh on electricity in the previous month was {:.1f}%'.format(
+          percentileofscore(d, 100)))
+    print('Distribution of declared electricity use (kWh in previous month)')
     print(d.describe())
 
 

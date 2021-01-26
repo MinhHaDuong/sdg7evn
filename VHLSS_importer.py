@@ -99,7 +99,7 @@ block_limits = [0, 30, 50, 100, 150, 200, 300, 400, 10000]
 survey["block"] = pd.cut(survey.kwh_last_month, [-0.1] + block_limits)
 
 # The 2013 tariff didn't use the block at 30 kWh, have to add it
-tariff_2013 = electricity_tariffs.ix['2013-08-01']
+tariff_2013 = electricity_tariffs.loc['2013-08-01']
 block_prices_2013 = np.insert(tariff_2013.values, 0, [0, tariff_2013[0]])
 
 # Illustrative more progressive tariff, source: author

@@ -25,11 +25,12 @@ def crosstable(column, yr):
     print(column, yr)
     try:
         print('\nContingency table:')
-        table = pd.crosstab(survey.Q12[survey.year == yr], survey.loc[survey.year == yr, column],
+        table = pd.crosstab(survey.Q12[survey.year == yr],
+                            survey.loc[survey.year == yr, column],
                             margins=True)
         print(table)
         print('\nProportions (%)')
-        print(100 * table / table.ix["All"])
+        print(100 * table / table.loc["All"])
         print('\nIndependance ?')
         chi2, p, dof, ex = chi2_contingency(table.drop('All').drop('All', 1))
         print('Chi2 =', chi2)
@@ -41,10 +42,14 @@ def crosstable(column, yr):
         print('ValueError: No data I presume.')
     finally:
         print()
-#%%
 
 
-for column in categoricalColumns.drop(['elec_poor', 'Q12', 'en_subsidy', 'block'], axis=1):
+# %%
+
+for column in categoricalColumns.drop(['elec_poor',
+                                       'Q12',
+                                       'en_subsidy',
+                                       'block'], axis=1):
     crosstable(column, 2008)
     crosstable(column, 2010)
     crosstable(column, 2012)

@@ -5,23 +5,23 @@
 #
 
 import matplotlib.pyplot as plt
-import pandas as pd
+from pandas.plotting import scatter_matrix
 
 from VHLSS_importer import survey
 
 plt.figure(figsize=(20, 20))
 
-pd.scatter_matrix(survey.loc[survey.year == 2014,
-                             ['elec_last_month',
-                              'kwh_last_month',
-                              'elec_year',
-                              'inc',
-                              'inc_ave',
-                              'size',
-                              'edu_max',
-                              'sq_m',
-                              'assets']],
-                  figsize=(10, 10),
-                  diagonal='kde')
+scatter_matrix(survey.loc[survey.year == 2014,
+                          ['elec_last_month',
+                           'kwh_last_month',
+                           'elec_year',
+                           'inc',
+                           'inc_ave',
+                           'size',
+                           'edu_max',
+                           'sq_m',
+                           'assets']],
+               figsize=(10, 10),
+               diagonal='kde')
 
 plt.savefig('scatterMatrix.png')

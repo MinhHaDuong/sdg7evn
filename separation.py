@@ -51,7 +51,7 @@ plt.savefig('separation.png')
 plt.close(fig)
 
 #%%
-from pandas.tools.plotting import radviz
+from pandas.plotting import radviz
 
 plt.figure(figsize=(10, 10))
 radviz(survey.loc[survey.year == 2014, ['elec_last_month', 'inc', 'size', 'Q12', 'sq_m']].dropna(),

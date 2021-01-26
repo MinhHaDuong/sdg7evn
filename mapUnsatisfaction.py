@@ -4,8 +4,9 @@
 #
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 
+import numpy as np
 
-from VHLSS_importer import survey, np
+from VHLSS_importer import survey
 from mapTinh import plotChoropleths
 
 DEBUG = False
@@ -33,5 +34,5 @@ assert unsatisfaction(2014, 12) == 45 / 240
 
 plotChoropleths(unsatisfaction,
                 "%Responses 'Power needs were not met last month'",
-                'unsatisfactionMaps.png',
+                'mapUnsatisfaction',
                 [2010, 2012, 2014])

@@ -3,8 +3,9 @@
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+import matplotlib.pyplot as plt
 
-from VHLSS_importer import survey, plt
+from VHLSS_importer import survey
 
 print("""Answers to VHLSS 2010/2012/2014 surveys
 Cross plot of

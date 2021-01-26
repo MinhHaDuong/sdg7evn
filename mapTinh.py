@@ -23,7 +23,7 @@
 #      would be perceived as more problematic than a smaller province
 #  - Provinces have different population density
 
-from VHLSS_importer import datadir, provinceTinhByName
+from VHLSS_importer import DATADIR, provinceTinhByName
 
 import shapefile
 
@@ -35,7 +35,7 @@ from matplotlib import pyplot, colorbar
 DEBUG = False
 
 
-sf = shapefile.Reader(datadir + 'VNM_adm_shp/VNM_adm1')
+sf = shapefile.Reader(DATADIR + 'VNM_adm_shp/VNM_adm1')
 recs = sf.records()
 provinceNames = [row[11] for row in recs]
 provinceNamesVN = [row[4] for row in recs]
@@ -90,4 +90,5 @@ def plotChoropleths(f, label, filename, years):
     cbar.set_ticklabels(['0%', '20%', '40%', '60%', '80%', '100%'])
     cbar.set_label(label)
     if (not DEBUG):
-        fig.savefig(filename)
+        fig.savefig(filename + '.png')
+        fig.savefig(filename + '-300dpi.png', dpi=300)

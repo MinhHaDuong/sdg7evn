@@ -3,8 +3,10 @@
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+import numpy as np
+import pandas as pd
 
-from VHLSS_importer import survey, np, pd
+from VHLSS_importer import survey
 
 
 def printout(column):

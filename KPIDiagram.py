@@ -4,10 +4,12 @@
 #
 #
 # sudo pip3 install matplotlib-venn
+import matplotlib.pyplot as plt
 
-from VHLSS_importer import survey, pd, plt
 from matplotlib_venn import venn3, venn2
 from matplotlib import gridspec
+
+from VHLSS_importer import survey
 
 #%%
 
@@ -72,3 +74,4 @@ n = cover3('low_use', 'lacking', 'LIHC', fig.add_subplot(gs[0:4, :]))
 fig.suptitle('Energy poverty in Vietnam Households 2014 survey\n(n=' + str(n) + ")", fontsize=18)
 
 fig.savefig('KPIDiagram.png')
+fig.savefig('KPIDiagram-300dpi.png', dpi=300)

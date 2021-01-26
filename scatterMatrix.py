@@ -3,7 +3,11 @@
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
-from VHLSS_importer import survey, plt, pd
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+from VHLSS_importer import survey
 
 plt.figure(figsize=(20, 20))
 

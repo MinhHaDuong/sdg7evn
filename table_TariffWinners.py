@@ -12,8 +12,9 @@ on the electricity bills of households, based on the declared March bill in VHLS
 How many households would see their electricity bill decrease/increase, among the energy poors
 for different definitions of energy poor
 """
+import numpy as np
 
-from VHLSS_importer import np, survey
+from VHLSS_importer import survey
 from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt
 
 block_sizes = np.diff(block_limits)

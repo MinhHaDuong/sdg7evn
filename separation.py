@@ -13,8 +13,9 @@ Household size
 Red: electricity needs not met
 Blue: all others
 """
+import matplotlib.pyplot as plt
 
-from VHLSS_importer import survey, plt
+from VHLSS_importer import survey
 
 
 def subfig(yr):
@@ -24,7 +25,7 @@ def subfig(yr):
     plt.scatter(x[survey.lacking], y[survey.lacking], color='red', alpha=0.3)
 
 
-fig = plt.figure(figsize=(6, 12))
+fig = plt.figure(figsize=(5.5, 11))
 
 ax = fig.add_subplot(311)
 subfig(2010)

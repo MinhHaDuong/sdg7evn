@@ -11,8 +11,10 @@ on the electricity bills of households, based on the declared March bill in VHLS
 
 As a proxy to the total EVN revenue, we look at variations of the mean bill
 """
+import matplotlib.pyplot as plt
+import numpy as np
 
-from VHLSS_importer import np, plt, survey
+from VHLSS_importer import survey
 from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt
 from scipy.optimize import fsolve
 
@@ -54,25 +56,25 @@ print("The share of households with a zero electricity bill ", end='')
 print("increases from {:.1f}% to {:.1f}%.".format(percent_zero(bill_ref), percent_zero(bill_alt)))
 
 print("The bill decreases for {:.1f}% of households, ".format(
-          100 * len(bill_change[bill_change <= 0]) / len(bill_change)),
+      100 * len(bill_change[bill_change <= 0]) / len(bill_change)),
       end='')
 print("at most by {:.1f} kVND.".format(bill_change.min()))
 
 print()
 
 print("The average bill increases {:.0f}% from {:.1f} kVND to {:.1f} kVND, ".format(
-        relative_increase * 100, avg_paid_ref, avg_paid_alt),
+      relative_increase * 100, avg_paid_ref, avg_paid_alt),
       end='')
 
 print("that is {:.1f} kVND.".format(bill_change.mean()))
 
 print("For 50% of households, the bill increases over {:.1f} kVND".format(
-        bill_change.quantile(0.50)))
+      bill_change.quantile(0.50)))
 print("For  5% of households, the bill increases over {:.1f} kVND".format(
-        bill_change.quantile(0.95)))
+      bill_change.quantile(0.95)))
 print("For  1% of households, the bill increases over {:.1f} kVND, ".format(
-        bill_change.quantile(0.99)),
-    end='')
+      bill_change.quantile(0.99)),
+      end='')
 print("with a maximum increase of {:.1f} kVND.".format(bill_change.max()))
 
 #%%
@@ -103,7 +105,7 @@ plt.yticks(block_limits[:-1])
 
 def plot_poverty_criteria(bills):
     plt.figure()
-    plt.hexbin(df.inc/12, bills,  
+    plt.hexbin(df.inc / 12, bills,  
                bins='log', cmap='Greys',
                gridsize=1000
                )

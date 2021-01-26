@@ -4,8 +4,9 @@
 #
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 
+import numpy as np
 
-from VHLSS_importer import survey, np
+from VHLSS_importer import survey
 from mapTinh import plotChoropleths
 
 DEBUG = False
@@ -34,5 +35,5 @@ lowkWhperMonth = 30
 
 plotChoropleths(lowUseRate,
                 'Households using less than " + str(lowkWhperMonth) + " kWh in previous month',
-                'powerLowUseMaps.png',
+                'mapLowUse',
                 [2010, 2012, 2014])

@@ -5,19 +5,19 @@
 PYTHON=python3
 
 # Hires figures
-hiresFiguresNames = ECDspending ECDuse TariffCompared
+hiresFiguresNames = ECDspending ECDuse TariffCompared kWhbyIncome figure_effort KPIDiagram blockTariff figure_highexpense mapGrid prices mapUnsatisfaction 
 hiresFiguresFiles = $(addsuffix .pdf,$(hiresFiguresNames)) $(addsuffix -300dpi.png,$(hiresFiguresNames))
 
 # Also used in the paper
-figuresNames = blockTariff figure_highexpense kWhbyIncome powerGridMaps prices unsatisfactionMaps KPIDiagram
+figuresNames = 
 figuresFiles = $(addsuffix .png,$(figuresNames) $(hiresFiguresNames))
 
-tablesNames = incomeShare table_KPI table_satisfaction table_TariffWinners table_TariffLIHC
+tablesNames = table_effort table_KPI table_satisfaction table_TariffWinners table_TariffLIHC table_kwh_quantiles
 tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 
 # Exploratory data visualization
-moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation powerLowUseMaps
+moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation
 moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 
 moreTablesNames= crossTables summaryTables quantileskWh
@@ -41,7 +41,7 @@ all: $(figures) $(tables) $(imageSets)
 .PHONY: clean cleaner
 
 clean:
-	-rm  $(hiresFiguresFiles) $(figures) $(tables) $(imageSets)  2> /dev/null
+	-@rm  $(hiresFiguresFiles) $(figures) $(tables) 2> /dev/null || true
 
 cleaner: clean
 	-rm -rf __pycache__/  2> /dev/null

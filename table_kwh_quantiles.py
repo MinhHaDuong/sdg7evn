@@ -1,16 +1,15 @@
 # Statistics on energy poverty in Vietnam
-##
-# (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
+#
+# (c) 2016-2017 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+"""Quantiles of the electricity use distribution Vientam households
+
+Comparing the general sample with the households declaring their electricity needs not met
+"""
 
 from VHLSS_importer import survey
 from scipy.stats import percentileofscore
-
-#TODO
-# FIX TABLE 4
-# FIX Makefile for Table 4
-# Discuss wrt 30 kwh not 22
 
 all_households = survey.loc[survey.year2014, 'kwh_last_month']
 lacking_households = all_households.loc[survey.lacking]

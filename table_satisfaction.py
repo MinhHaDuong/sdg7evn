@@ -5,12 +5,12 @@ Created on Fri Jun  9 16:21:58 2017
 
 @author: haduong
 """
+import pandas as pd
 
-
-from VHLSS_importer import survey, pd
-
+from VHLSS_importer import survey
 
 counts = pd.crosstab(survey['Q12'], survey.year, margins=True)
+
 
 def freq(reply, year):
     total = counts.loc['All', year]

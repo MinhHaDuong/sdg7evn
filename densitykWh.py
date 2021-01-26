@@ -3,8 +3,9 @@
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+import matplotlib.pyplot as plt
 
-from VHLSS_importer import survey, plt
+from VHLSS_importer import survey
 
 print("""Answers to VHLSS 2010/2012/2014 survey
 Electricity used last month
@@ -18,7 +19,7 @@ def subfig(yr):
     s2.plot.kde()
 
 
-fig = plt.figure(figsize=(5, 12))
+fig = plt.figure(figsize=(5.5, 11))
 
 ax = fig.add_subplot(311)
 subfig(2010)

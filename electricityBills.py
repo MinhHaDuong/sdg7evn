@@ -9,9 +9,9 @@ Red: Vietnam households declaring their electricity needs were not met (Q12)
 Blue: The complementary population
 Axis: electricity consumption, electricity bill
 """
+import matplotlib.pyplot as plt
 
 from VHLSS_importer import survey
-import matplotlib.pyplot as plt
 
 
 def subfig(yr, n):
@@ -31,7 +31,7 @@ def subfig(yr, n):
     return ax
 
 
-fig = plt.figure(figsize=(6, 12))
+fig = plt.figure(figsize=(5.5, 11))
 
 subfig(2010, 1)
 subfig(2012, 2)

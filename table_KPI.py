@@ -4,7 +4,10 @@
 #
 #
 
-from VHLSS_importer import survey, pd, np
+import numpy as np
+import pandas as pd
+
+from VHLSS_importer import survey
 
 survey['elec_use'] = pd.cut(survey.kwh_last_month, [-100, 30, 3000])
 survey['income_share'] = pd.cut(survey.elec_year / survey.inc, [0, 0.06, 1])

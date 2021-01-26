@@ -25,7 +25,7 @@ def lihc_count(df, ante, post):
 
 def lihc_array(d):
     return np.array([[lihc_count(d, False, False), lihc_count(d, False, True)],
-                     [lihc_count(d, True,  False), lihc_count(d, True,  True)]])
+                     [lihc_count(d, True, False), lihc_count(d, True, True)]])
 
 
 def lihc_table(df):

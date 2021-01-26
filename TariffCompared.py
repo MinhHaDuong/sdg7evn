@@ -5,8 +5,10 @@
 #
 # Created on Thu Sep 22 13:50:53 2016
 #
+import matplotlib.pyplot as plt
+import numpy as np
 
-from VHLSS_importer import np, plt, survey
+from VHLSS_importer import survey
 from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt
 
 block_sizes = np.diff(block_limits)

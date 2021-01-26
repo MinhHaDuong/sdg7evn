@@ -1,27 +1,30 @@
-# Reading the VHLSS 2010/2012/2014 survey data into a Python Pandas dataframe
+# Statistics on energy poverty in Vietnam
+# based on VHLSS 2010/2012/2014 survey data
 #
-# (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
+# (c) 2016, 2017 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+"""Reading the VHLSS 2010/2012/2014 survey data into a Python Pandas dataframe"""
 
+import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import time
 
-import matplotlib
-matplotlib.style.use('ggplot')
+from matplotlib import pyplot
+pyplot.style.use('ggplot')
 
-datadir = '../data/'
+DATADIR = '../data/'
 
 
 #%% VHLSS surveys data
 
-survey = pd.read_stata(datadir + 'Processed_data/VNHH_energy_2008-2014.dta')
+survey = pd.read_stata(DATADIR + 'Processed_data/VNHH_energy_2008-2014.dta')
 
 
-def clip(s):
-    return s.clip(0, s.quantile(0.9999))
+def clip(series):
+    "Clip outliers defined as negative values or values above the top of distribution"
+    return series.clip(0, series.quantile(0.9999))
 
 
 survey.elec_last_month = clip(survey.elec_last_month)
@@ -74,10 +77,20 @@ curve_style = {2014: {'color': '#b30000', 'linestyle': 'solid'},
                2008: {'color': '#fdcc8a', 'linestyle': 'solid'}
                }
 
+#%%
+# Sorting the values is faster than using  scipy.stats.percentileofscore
+
+
+def cdf_plot(year, column):
+    "Cumulative Density Function plot of a column data, for a given year"
+    x_sorted = survey.loc[survey.year == year, column].dropna().sort_values()
+    percentiles = np.linspace(0, 100, len(x_sorted))
+    plt.step(x_sorted, percentiles, **curve_style[year])
+
 
 #%% EVN tariff to households
 
-electricity_tariffs = pd.read_csv(datadir + 'Processed_data/elec_price.csv',
+electricity_tariffs = pd.read_csv(DATADIR + 'Processed_data/elec_price.csv',
                                   parse_dates=True,
                                   index_col=[0])
 
@@ -106,11 +119,14 @@ CPI = pd.DataFrame([104.30, 107.60, 115.90, 125.50, 134.90, 146.30, 179.64, 192.
 
 
 #%%
-# Gini code lifted from :
-# https://planspacedotorg.wordpress.com/2013/06/21/how-to-calculate-gini-coefficient-from-raw-data-in-python/
-# See also:  https://en.wikipedia.org/wiki/Gini_coefficient#Calculation for less efficient code
 
 def gini(list_of_values):
+    """The Gini coefficient of a distribution
+
+    Gini code lifted from :
+    https://planspacedotorg.wordpress.com/2013/06/21/how-to-calculate-gini-coefficient-from-raw-data-in-python/
+    See also:  https://en.wikipedia.org/wiki/Gini_coefficient#Calculation for less efficient code
+    """
     sorted_list = sorted(list_of_values)
     height, area = 0, 0
     for value in sorted_list:
@@ -122,7 +138,7 @@ def gini(list_of_values):
 
 #%%
 
-provinces = pd.read_stata(datadir + 'VNM_adm_shp/ma_tinh_convert.dta')
+provinces = pd.read_stata(DATADIR + 'VNM_adm_shp/ma_tinh_convert.dta')
 
 provinceTinhByName = dict(zip(provinces.VARNAME_1, provinces.tinh))
 provinceNameByTinh = dict(zip(provinces.tinh, provinces.VARNAME_1))
@@ -136,11 +152,12 @@ provinceTinhByID1 = dict(zip(provinces.ID_1, provinces.tinh))
 #%%
 
 
-def timefunc(f):
+def timefunc(function):
+    "Decorator for profiling"
     def f_timer(*args, **kwargs):
         start = time.time()
-        result = f(*args, **kwargs)
+        result = function(*args, **kwargs)
         end = time.time()
-        print(f.__name__, 'took', end - start, 'time')
+        print(function.__name__, 'took', end - start, 'time')
         return result
     return f_timer

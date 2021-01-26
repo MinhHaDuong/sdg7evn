@@ -4,8 +4,9 @@
 #
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 
+import numpy as np
 
-from VHLSS_importer import survey, np
+from VHLSS_importer import survey
 from mapTinh import plotChoropleths
 
 DEBUG = False
@@ -25,5 +26,5 @@ def notGridLighting(yr, provinceTinh):
 
 plotChoropleths(notGridLighting,
                 '%Households not lighting from grid',
-                'powerGridMaps.png',
+                'mapGrid',
                 [2008, 2010, 2012, 2014])

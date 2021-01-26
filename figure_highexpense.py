@@ -17,8 +17,10 @@ We display Electricity bill vs. Income for Vietnam households
 with red line defining the 'bill == 6% of income' frontier.
 Households above the line are in High electcitiy expense conodition
 """
+import matplotlib.pyplot as plt
+import numpy as np
 
-from VHLSS_importer import survey, np, plt
+from VHLSS_importer import survey
 
 fig = plt.figure(figsize=(12, 12))
 
@@ -66,3 +68,4 @@ subfig2(2012, 6)
 subfig2(2014, 8).set_xlabel('Monthly income, k VND')
 
 plt.savefig("figure_highexpense.png")
+plt.savefig("figure_highexpense-300dpi.png", dpi=300)

@@ -3,8 +3,10 @@
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+import matplotlib.pyplot as plt
+import numpy as np
 
-from VHLSS_importer import survey, plt, np
+from VHLSS_importer import survey
 
 print("""Answers to VHLSS 2010/2012/2014 surveys
 Multidimentional plot on what is energy poverty:
@@ -41,7 +43,7 @@ def subfig(yr, n):
     return ax
 
 
-fig = plt.figure(figsize=(6, 12))
+fig = plt.figure(figsize=(5.5, 11))
 fig.suptitle("""Increasing block tariff of electricity for households in Vietnam
 Red regression line, kWh <= 50 kWh
 Blue regression line, 50 < kWh < 400""", fontsize=12)
@@ -51,3 +53,4 @@ subfig(2012, 2)
 subfig(2014, 3).set_xlabel('kWh last month')
 
 plt.savefig('blockTariff.png')
+plt.savefig('blockTariff-300dpi.png', dpi=300)

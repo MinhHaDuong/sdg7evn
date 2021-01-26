@@ -3,9 +3,11 @@
 # (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
+import pandas as pd
 
-from VHLSS_importer import survey, pd
 from scipy.stats import chi2_contingency
+
+from VHLSS_importer import survey
 
 print("""Answers to VHLSS 2010/2012/2014 surveys
 Cross tabulation of

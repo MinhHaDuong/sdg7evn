@@ -26,4 +26,3 @@ Source code organization:
  some scripts produce one table
  some scripts produce one figure
  some scripts are only used for exploratory data analysis, they are not run by the Makefile
-

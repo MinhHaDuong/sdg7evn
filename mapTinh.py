@@ -85,7 +85,7 @@ def plotChoropleths(f, label, filename, years):
         ax = fig.add_subplot(1, len(years), years.index(yr) + 1)
         mapTinh(lambda t: f(yr, t), ax, str(yr), colormap_name)
     cbaraxes = fig.add_axes([0.05, 0.15, 0.02, 0.7])
-    cbar = colorbar.ColorbarBase(cbaraxes, cmap=colormap_name)
+    cbar = colorbar.ColorbarBase(cbaraxes, cmap=get_cmap(colormap_name))
     cbar.set_ticks([0., 0.2, 0.4, 0.6, 0.8, 1])
     cbar.set_ticklabels(['0%', '20%', '40%', '60%', '80%', '100%'])
     cbar.set_label(label)

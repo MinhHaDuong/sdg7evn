@@ -16,7 +16,7 @@ Among the general population, and among the officially income poor
 
 from VHLSS_importer import np, survey
 
-from table_TariffWinners import df
+from table.TariffWinners import df
 
 
 def lihc_count(df, ante, post):

@@ -12,7 +12,7 @@ hiresFiguresFiles = $(addsuffix .pdf,$(hiresFiguresNames)) $(addsuffix -300dpi.p
 figuresNames = 
 figuresFiles = $(addsuffix .png,$(figuresNames) $(hiresFiguresNames))
 
-tablesNames = table_effort table_KPI table_satisfaction table_TariffWinners table_TariffLIHC table_kwh_quantiles
+tablesNames = effort KPI satisfaction TariffWinners TariffLIHC kwh_quantiles
 tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 
@@ -38,6 +38,9 @@ all: $(figures) $(tables) $(imageSets)
 %.txt: %.py
 	$(PYTHON) $^ > $@
 
+%.txt: table/%.py
+	$(PYTHON) -m table.$* > $@
+
 .PHONY: clean cleaner
 
 clean:
@@ -45,4 +48,3 @@ clean:
 
 cleaner: clean
 	-rm -rf __pycache__/  2> /dev/null
-

@@ -65,5 +65,5 @@ fig.suptitle("Vietnam households electricity costs", fontsize=16)
 plt.subplots_adjust(top=0.92)
 
 fig.savefig('TariffCompared.png')
-fig.savefig('TariffCompared.pdf')
+# fig.savefig('TariffCompared.pdf')
 fig.savefig('TariffCompared-300dpi.png', dpi=300)

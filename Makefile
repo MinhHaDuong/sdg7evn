@@ -5,7 +5,7 @@
 PYTHON=python3
 
 # Hires figures
-hiresFiguresNames = ECDspending ECDuse TariffCompared kWhbyIncome figure_effort KPIDiagram blockTariff figure_highexpense mapGrid prices mapUnsatisfaction 
+hiresFiguresNames = ECDspending ECDuse TariffCompared kWhbyIncome effort KPIDiagram blockTariff highexpense mapGrid prices mapUnsatisfaction 
 hiresFiguresFiles = $(addsuffix .pdf,$(hiresFiguresNames)) $(addsuffix -300dpi.png,$(hiresFiguresNames))
 
 # Also used in the paper
@@ -35,11 +35,17 @@ all: $(figures) $(tables) $(imageSets)
 %.png: %.py
 	$(PYTHON) $^
 
+%.png: figure/%.py
+	$(PYTHON) -m figure.$*
+
+%.png: figureextra/%.py
+	$(PYTHON) -m figureextra.$*
+
 %.txt: table/%.py
 	$(PYTHON) -m table.$* > $@
 
-%.txt: table2/%.py
-	$(PYTHON) -m table2.$* > $@
+%.txt: tableextra/%.py
+	$(PYTHON) -m tableextra.$* > $@
 
 .PHONY: clean cleaner
 

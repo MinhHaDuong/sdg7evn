@@ -35,11 +35,11 @@ all: $(figures) $(tables) $(imageSets)
 %.png: %.py
 	$(PYTHON) $^
 
-%.txt: %.py
-	$(PYTHON) $^ > $@
-
 %.txt: table/%.py
 	$(PYTHON) -m table.$* > $@
+
+%.txt: table2/%.py
+	$(PYTHON) -m table2.$* > $@
 
 .PHONY: clean cleaner
 

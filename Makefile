@@ -38,6 +38,12 @@ all: $(figures) $(tables) $(imageSets)
 %.png: figure/%.py
 	$(PYTHON) -m figure.$*
 
+%.png: figure/%.odg
+	libreoffice --convert-to png $^
+
+%.svg: figure/%.odg
+	libreoffice --convert-to svg $^
+
 %.png: figureextra/%.py
 	$(PYTHON) -m figureextra.$*
 

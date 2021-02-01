@@ -17,7 +17,7 @@ tablesFiles = $(addsuffix .txt,$(tablesNames))
 moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation
 moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 
-moreTablesNames= crossTables summaryTables quantileskWh
+moreTablesNames= crossTables summaryTables
 moreTablesFiles=$(addsuffix .txt,$(moreTablesNames))
 
 figures=$(figuresFiles) $(hiresFiguresFiles) $(moreFiguresFiles)

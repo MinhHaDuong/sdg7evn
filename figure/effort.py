@@ -39,5 +39,5 @@ plt.xlabel('Fraction of income spend on electricity')
 plt.ylabel('% Households')
 plt.legend(['2014', '2012', '2010', '2008'], loc='lower right', frameon=False)
 
-fig.savefig('figure_effort.png')
-fig.savefig('figure_effort-300dpi.png', dpi=300)
+fig.savefig('effort.png')
+fig.savefig('effort-300dpi.png', dpi=300)

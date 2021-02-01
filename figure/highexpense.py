@@ -67,5 +67,5 @@ subfig2(2010, 4)
 subfig2(2012, 6)
 subfig2(2014, 8).set_xlabel('Monthly income, k VND')
 
-plt.savefig("figure_highexpense.png")
-plt.savefig("figure_highexpense-300dpi.png", dpi=300)
+plt.savefig("highexpense.png")
+plt.savefig("highexpense-300dpi.png", dpi=300)

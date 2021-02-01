@@ -12,7 +12,7 @@ from mapTinh import plotChoropleths
 DEBUG = False
 
 
-#%%
+# %%
 
 def lowUseRate(yr, provinceTinh):
     usage = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh),
@@ -29,11 +29,8 @@ def lowUseRate(yr, provinceTinh):
     return ratio
 
 
-#%%
+# %%
 
 lowkWhperMonth = 30
-
-plotChoropleths(lowUseRate,
-                'Households using less than " + str(lowkWhperMonth) + " kWh in previous month',
-                'mapLowUse',
-                [2010, 2012, 2014])
+legend = f'Households using less than {lowkWhperMonth} kWh in previous month'
+plotChoropleths(lowUseRate, legend, 'mapLowUse', [2010, 2012, 2014])

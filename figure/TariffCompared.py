@@ -13,7 +13,7 @@ from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt
 
 block_sizes = np.diff(block_limits)
 
-#%%
+# %%
 
 
 def plot_block_tariff(ax, col, block_prices):
@@ -34,7 +34,7 @@ def plot_total_bill(ax, col, block_prices):
     ax.set_title('Monthly bill (= total price)')
 
 
-#%%
+# %%
 
 fig = plt.figure(figsize=(5, 8))
 

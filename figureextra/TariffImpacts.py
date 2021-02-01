@@ -80,7 +80,7 @@ print("with a maximum increase of {:.1f} kVND.".format(bill_change.max()))
 #%%
 
 plt.figure()
-bill_change.hist(bins=[-30, 0, 30, 60, 90, 120, 150, 180, 360, 2000], normed=True)
+bill_change.hist(bins=[-30, 0, 30, 60, 90, 120, 150, 180, 360, 2000], density=True)
 plt.axis([0, 305, -0.001, 0.015])
 plt.xticks([-30, 0, 30, 60, 90, 120, 150, 180, 360])
 plt.xlabel("kVND")

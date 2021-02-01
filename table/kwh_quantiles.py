@@ -1,9 +1,9 @@
-# Statistics on energy poverty in Vietnam
+# Statistics on energy poverty in Vietnam.
 #
 # (c) 2016-2017 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 #
 #
-"""Quantiles of the electricity use distribution Vientam households
+"""Quantiles of the electricity use distribution Vietnam households
 
 Comparing the general sample with the households declaring their electricity needs not met
 """
@@ -44,7 +44,7 @@ print('\nHalf of the self-declared electricity poors households used less than',
       medPoor, 'kWh in the month')
 print('That is', numPoor, 'respondents\n')
 
-p = percentileofscore(all_households, medPoor)
+p = percentileofscore(all_households.dropna(), medPoor)
 numSober = round(p * all_households.count() / 100)
 print('Among all households, {:.1f} percent of respondents used less than that'.format(p))
 print('That is {:.0f} respondents\n'.format(numSober))

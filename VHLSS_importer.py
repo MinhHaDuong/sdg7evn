@@ -6,6 +6,7 @@
 #
 """Reading the VHLSS 2010/2012/2014 survey data into a Python Pandas dataframe"""
 
+import os
 import time
 import pandas as pd
 import numpy as np
@@ -14,16 +15,18 @@ import matplotlib.pyplot as plt
 from matplotlib import pyplot
 pyplot.style.use('ggplot')
 
-DATADIR = '../data/'
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+DATADIR = parentdir + '/data/'
 
 
-#%% VHLSS surveys data
+# %% VHLSS surveys data
 
 survey = pd.read_stata(DATADIR + 'Processed_data/VNHH_energy_2008-2014.dta')
 
 
 def clip(series):
-    "Clip outliers defined as negative values or values above the top of distribution"
+    """Clip outliers defined as negative values or values above the top of distribution."""
     return series.clip(0, series.quantile(0.9999))
 
 
@@ -49,7 +52,7 @@ survey.rent.cat.categories = ['Pay', 'DoNoPay']
 survey.gender.cat.categories = ['Male', 'Female']
 survey["Q12"] = survey.elec_poor.cat.remove_categories(['Missing', 'Idk'])
 
-#%% Energy poverty criteria
+# %% Energy poverty criteria
 
 survey["year2014"] = (survey.year == 2014)
 
@@ -69,7 +72,7 @@ survey["LIHC"] = (survey.high_cost) & (survey.inc_pov == 'Yes')
 
 survey["subsidized"] = (survey.en_subsidy > 0)
 
-#%%% Color scheme from colorbrewer2.org
+# %%% Color scheme from colorbrewer2.org
 
 curve_style = {2014: {'color': '#b30000', 'linestyle': 'solid'},
                2012: {'color': '#e34a33', 'linestyle': 'dashed'},
@@ -77,18 +80,18 @@ curve_style = {2014: {'color': '#b30000', 'linestyle': 'solid'},
                2008: {'color': '#fdcc8a', 'linestyle': 'solid'}
                }
 
-#%%
+# %%
 # Sorting the values is faster than using  scipy.stats.percentileofscore
 
 
 def cdf_plot(year, column):
-    "Cumulative Density Function plot of a column data, for a given year"
+    """Plot cumulative Density Function of a column data, for a given year."""
     x_sorted = survey.loc[survey.year == year, column].dropna().sort_values()
     percentiles = np.linspace(0, 100, len(x_sorted))
     plt.step(x_sorted, percentiles, **curve_style[year])
 
 
-#%% EVN tariff to households
+# %% EVN tariff to households
 
 electricity_tariffs = pd.read_csv(DATADIR + 'Processed_data/elec_price.csv',
                                   parse_dates=True,
@@ -106,7 +109,7 @@ block_prices_2013 = np.insert(tariff_2013.values, 0, [0, tariff_2013[0]])
 block_prices_alt = [0, 0, 1925, 1925, 1925, 2500, 2500, 3500, 3500]
 
 
-#%% Inflation data
+# %% Inflation data
 
 # https://www.gso.gov.vn/default_en.aspx?tabid=780
 # Monthly consumer price index by Months and Year
@@ -118,11 +121,11 @@ CPI = pd.DataFrame([104.30, 107.60, 115.90, 125.50, 134.90, 146.30, 179.64, 192.
                    )
 
 
-#%%
+# %%
+
 
 def gini(list_of_values):
-    """The Gini coefficient of a distribution
-
+    """Return the Gini coefficient of a distribution.
     Gini code lifted from :
     https://planspacedotorg.wordpress.com/2013/06/21/how-to-calculate-gini-coefficient-from-raw-data-in-python/
     See also:  https://en.wikipedia.org/wiki/Gini_coefficient#Calculation for less efficient code
@@ -136,7 +139,7 @@ def gini(list_of_values):
     return (fair_area - area) / fair_area
 
 
-#%%
+# %%
 
 provinces = pd.read_stata(DATADIR + 'VNM_adm_shp/ma_tinh_convert.dta')
 
@@ -149,11 +152,11 @@ provinceID1ByName = dict(zip(provinces.VARNAME_1, provinces.ID_1))
 provinceID1ByTinh = dict(zip(provinces.tinh, provinces.ID_1))
 provinceTinhByID1 = dict(zip(provinces.ID_1, provinces.tinh))
 
-#%%
+# %%
 
 
 def timefunc(function):
-    "Decorator for profiling"
+    """Decorate for profiling."""
     def f_timer(*args, **kwargs):
         start = time.time()
         result = function(*args, **kwargs)

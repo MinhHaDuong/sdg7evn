@@ -1,5 +1,6 @@
 *.pdf
 *.png
+*.svg
 *.txt
 
 # Byte-compiled / optimized / DLL files

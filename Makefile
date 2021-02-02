@@ -11,14 +11,14 @@ odgFiguresNames = block_tariff_example
 figuresFiles = $(addsuffix .png,$(pythonFiguresNames) $(odgFiguresNames))
 hiresFiguresFiles = $(addsuffix -300dpi.png,$(pythonFiguresNames)) $(addsuffix .svg,$(odgFiguresNames))
 
-tablesNames = effort KPI satisfaction TariffWinners TariffLIHC kwh_quantiles
+tablesNames = effort KPI satisfaction TariffWinners TariffLIHC kwh_quantiles useDistribution
 tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 # Extra figures and tables, used for exploratory data visualization
 moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation mapLowUse TariffImpacts
 moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 
-moreTablesNames= crossTables summaryTables incomeDistribution useDistribution
+moreTablesNames= crossTables summaryTables incomeDistribution
 moreTablesFiles=$(addsuffix .txt,$(moreTablesNames))
 
 figures=$(figuresFiles) $(hiresFiguresFiles) $(moreFiguresFiles)

@@ -14,14 +14,15 @@ DEBUG = False
 
 # %%
 
+
 def lowUseRate(yr, provinceTinh):
-    usage = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh),
-                       "kwh_last_month"
-                       ].dropna()
+    usage = survey.loc[
+        (survey.year == yr) & (survey.tinh == provinceTinh), "kwh_last_month"
+    ].dropna()
     NlowUsers = (usage <= lowkWhperMonth).sum()
     Nresponses = len(usage)
     if DEBUG:
-        print(provinceTinh, '\t', NlowUsers, '/', Nresponses)
+        print(provinceTinh, "\t", NlowUsers, "/", Nresponses)
     try:
         ratio = NlowUsers / Nresponses
     except ZeroDivisionError:
@@ -32,5 +33,5 @@ def lowUseRate(yr, provinceTinh):
 # %%
 
 lowkWhperMonth = 30
-legend = f'Households using less than {lowkWhperMonth} kWh in previous month'
-plotChoropleths(lowUseRate, legend, 'mapLowUse', [2010, 2012, 2014])
+legend = f"Households using less than {lowkWhperMonth} kWh in previous month"
+plotChoropleths(lowUseRate, legend, "mapLowUse", [2010, 2012, 2014])

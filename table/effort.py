@@ -14,7 +14,7 @@ def summary_stat(year):
     """Summary statistics of the distribution of effort, for a given year
 
     Effort is the fraction of income spend on the electricity bill"""
-    effort = survey.loc[survey.year == year, 'effort'].dropna()
+    effort = survey.loc[survey.year == year, "effort"].dropna()
 
     sample_size = len(effort)
     pay_nothing = len(effort[effort == 0]) / sample_size * 100

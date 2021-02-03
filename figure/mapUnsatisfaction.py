@@ -13,11 +13,13 @@ DEBUG = False
 
 
 def unsatisfaction(yr, provinceTinh):
-    responses = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh), 'elec_poor']
+    responses = survey.loc[
+        (survey.year == yr) & (survey.tinh == provinceTinh), "elec_poor"
+    ]
     unsatisfied = responses[survey.lacking].count()
     Nresponses = responses.count()
     if DEBUG:
-        print(provinceTinh, '\t', unsatisfied, '/', Nresponses)
+        print(provinceTinh, "\t", unsatisfied, "/", Nresponses)
     if Nresponses:
         return unsatisfied / Nresponses
     else:
@@ -32,7 +34,9 @@ assert unsatisfaction(2014, 12) == 45 / 240
 
 #%%
 
-plotChoropleths(unsatisfaction,
-                "%Responses 'Power needs were not met last month'",
-                'mapUnsatisfaction',
-                [2010, 2012, 2014])
+plotChoropleths(
+    unsatisfaction,
+    "%Responses 'Power needs were not met last month'",
+    "mapUnsatisfaction",
+    [2010, 2012, 2014],
+)

@@ -13,18 +13,22 @@ DEBUG = False
 
 
 def notGridLighting(yr, provinceTinh):
-    responses = survey.loc[(survey.year == yr) & (survey.tinh == provinceTinh), 'main_light']
-    fromGrid = responses[responses == 'Main_Grid'].count()
+    responses = survey.loc[
+        (survey.year == yr) & (survey.tinh == provinceTinh), "main_light"
+    ]
+    fromGrid = responses[responses == "Main_Grid"].count()
     Nresponses = responses.count()
     if DEBUG:
-        print(provinceTinh, '\t', fromGrid, '/', Nresponses)
+        print(provinceTinh, "\t", fromGrid, "/", Nresponses)
     if Nresponses:
         return 1 - fromGrid / Nresponses
     else:
         return np.nan
 
 
-plotChoropleths(notGridLighting,
-                '%Households not lighting from grid',
-                'mapGrid',
-                [2008, 2010, 2012, 2014])
+plotChoropleths(
+    notGridLighting,
+    "%Households not lighting from grid",
+    "mapGrid",
+    [2008, 2010, 2012, 2014],
+)

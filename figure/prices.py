@@ -1,7 +1,7 @@
-# Plot the electricity tariff in Vietnam.
+# Plot the households electricity tariff in Vietnam over time.
 
 """
-Plot the electricity tariff in Vietnam.
+Plot the households electricity tariff in Vietnam over time.
 
 (c) 2016-2021 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 """
@@ -39,12 +39,9 @@ electricity_tariffs.plot(ax=ax, legend=False)
 ax.set_xlabel("")
 ax.set_ylabel("VND / kWh")
 ax.set_ylim([0, 3000])
-ax.set_title("""VN households electricity tariff, nominal""")
+ax.set_title("""Nominal households electricity tariff""")
 
-(5 * CPI).plot(ax=ax, linewidth=3.0, linestyle='dashed')
-
-# Source: https://www.vietcombank.com.vn/exchangerates/   Accessed 2016-09-28
-VNDperUSD = 22265
+# (5 * CPI).plot(ax=ax, linewidth=3.0, linestyle='dashed')
 
 # %%
 
@@ -55,18 +52,11 @@ deflated_tariff.plot(ax=ax2)
 ax2.set_xlabel("")
 ax2.set_ylabel("VND / kWh")
 ax2.set_ylim([0, 3000])
-ax2.set_title("""VN households electricity tariff, deflated""")
-
-# Source: https://www.vietcombank.com.vn/exchangerates/   Accessed 2016-09-28
-# VNDperUSD = 22265
-#
-# ax3 = ax.twinx()
-# ax3.set_ylim([0, 1500 / VNDperUSD])
-# ax3.set_ylabel("US cents / kWh")
+ax2.set_title("""Deflated households electricity tariff""")
 
 plt.tight_layout()
 
-# %%plt.tight_layout()
+# %%
 
 fig.savefig("prices.png")
 fig.savefig("prices-300dpi.png", dpi=300)

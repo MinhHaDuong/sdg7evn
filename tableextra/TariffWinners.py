@@ -17,6 +17,8 @@ import numpy as np
 from VHLSS_importer import survey
 from VHLSS_importer import block_limits, block_prices_2013, block_prices_alt
 
+YEAR = 2014
+
 block_sizes = np.diff(block_limits)
 
 block_costs_2013 = block_sizes * block_prices_2013[1:] / 1000
@@ -29,7 +31,7 @@ total_bills_alt = np.cumsum(np.insert(block_costs_alt, 0, 0))
 #%%
 
 df = survey.loc[
-    (survey.year == 2014) & (survey.elec_poor.notnull()),
+    (survey.year == YEAR) & (survey.elec_poor.notnull()),
     [
         "inc",
         "kwh_last_month",

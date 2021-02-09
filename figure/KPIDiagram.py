@@ -22,7 +22,7 @@ data = survey[(survey.year == 2014) & survey.elec_poor.notnull()]
 def num_poors(column, definition):
     answers = data.loc[:, column].count()
     poors = data.loc[definition, column].count()
-    return "\t{:.1f}%\t{:d}\t{:d}".format(100 * poors / answers, poors, answers)
+    return "\t{:4.1f}% \t{:4d} \t{:d}".format(100 * poors / answers, poors, answers)
 
 
 print("Energy poverty criteria in 2014, Vietnam Households having answered Q12")
@@ -68,7 +68,11 @@ def cover_two(col1, col2, axe):
 
 def cover3(col1, col2, col3, axe):
     gb = data.groupby([col1, col2, col3]).size()
-    #    print(gb)
+    # Handle exception when the 3-way intersectoin is empty
+    try:
+        gb[1, 1, 1]
+    except KeyError:
+        gb.loc[1, 1, 1] = 0
     venn3(
         subsets=(
             gb[1, 0, 0],

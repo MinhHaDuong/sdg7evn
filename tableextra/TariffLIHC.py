@@ -13,11 +13,13 @@ How many people get in to / out of the High Cost of electricity (bill > 6% incom
 with a more progressive tariff.
 Among the general population, and among the officially income poor
 """
+import numpy as np
 
-from VHLSS_importer import np, survey
+from VHLSS_importer import survey
 
 from table.TariffWinners import df
 
+YEAR = 2014
 
 def lihc_count(df, ante, post):
     return len(df.loc[(df.high_cost == ante) & (df.high_cost_expost == post)])
@@ -39,7 +41,7 @@ def lihc_table(df):
     t2 = lihc_array(d2)
     d3 = df.loc[df.low_income]
     t3 = lihc_array(d3)
-    n = survey[survey.year == 2014].count().inc
+    n = survey[survey.year == YEAR].count().inc
     fmt = "\t{:5d} ({:.1f}%)\t{:5d} ({:.1f}%)\t{:5d} ({:.1f}%)\n"
     s = "Households with high costs under the EVN 2013 (ex ante)"
     s += " and the more progressive tariff (ex post)\n"

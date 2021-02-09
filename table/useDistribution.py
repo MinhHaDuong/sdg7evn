@@ -7,7 +7,7 @@
 #
 
 
-from VHLSS_importer import survey, gini
+from VHLSS_importer import survey, YEARS, gini
 from scipy.stats import percentileofscore
 
 
@@ -29,6 +29,5 @@ def cdf(yr):
     print(d.describe())
 
 
-cdf(2010)
-cdf(2012)
-cdf(2014)
+for year in YEARS[1:]:
+    cdf(year)

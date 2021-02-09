@@ -13,6 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib import pyplot
+from matplotlib import cm
 
 pyplot.style.use("ggplot")
 
@@ -23,7 +24,8 @@ DATADIR = parentdir + "/data/"
 
 # %% VHLSS surveys data
 
-survey = pd.read_stata(DATADIR + "Processed_data/VNHH_energy_2008-2014.dta")
+survey = pd.read_stata(DATADIR + "Processed_data/VNHH_energy_2008-2018.dta")
+YEARS = [2008, 2010, 2012, 2014, 2016, 2018]
 
 
 def clip(series):
@@ -73,14 +75,18 @@ survey["LIHC"] = (survey.high_cost) & (survey.inc_pov == "Yes")
 
 survey["subsidized"] = survey.en_subsidy > 0
 
-# %%% Color scheme from colorbrewer2.org
+# %% Color scheme
 
+palette = cm.get_cmap('viridis')
 curve_style = {
-    2014: {"color": "#b30000", "linestyle": "solid"},
-    2012: {"color": "#e34a33", "linestyle": "dashed"},
-    2010: {"color": "#fc8d59", "linestyle": "dashdot"},
-    2008: {"color": "#fdcc8a", "linestyle": "solid"},
+    2018: {"color": palette(0.5), "linestyle": "solid"},
+    2016: {"color": palette(0.4), "linestyle": "solid"},
+    2014: {"color": palette(0.3), "linestyle": "solid"},
+    2012: {"color": palette(0.2), "linestyle": "solid"},
+    2010: {"color": palette(0.1), "linestyle": "solid"},
+    2008: {"color": palette(0.0), "linestyle": "solid"},
 }
+
 
 # %%
 # Sorting the values is faster than using  scipy.stats.percentileofscore
@@ -120,7 +126,7 @@ block_prices_alt = [0, 0, 1925, 1925, 1925, 2500, 2500, 3500, 3500]
 # Latest update 8/5/2020
 # Matrix E08.30
 # Accessed 2021-02-09
-CPI = pd.DataFrame(
+CPI = pd.Series(
     [   100,
         np.NaN,
         104.30,
@@ -142,8 +148,7 @@ CPI = pd.DataFrame(
         331.23,
         340.48
     ],
-    index=pd.date_range("2000-01-01", periods=20, freq="A-JAN"),
-    columns=["Consumer_Price_Index"],
+    index=pd.date_range("2000-01-01", periods=20, freq="A-JAN")
 )
 
 

@@ -6,7 +6,7 @@
 import numpy as np
 import pandas as pd
 
-from VHLSS_importer import survey
+from VHLSS_importer import survey, YEARS
 
 
 def printout(column):
@@ -17,7 +17,7 @@ def printout(column):
     print(np.round(100 * counts, 2), "\n")
 
 
-#%%
+#%% See also satisfaction.py
 
 print(
     """
@@ -40,6 +40,8 @@ The answers categories may have changed across surveys
 """
 )
 
+pd.set_option('display.max_columns', len(YEARS) + 1)
+pd.set_option('display.width', 150)
 printout("main_light")
 
 

@@ -1,21 +1,22 @@
-# Statistics on energy poverty in Vietnam.
-#
-# (c) 2016-2017 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
-#
-#
-"""Quantiles of the electricity use distribution Vietnam households
+"""Compare the households declaring they lacked electricity with others.
 
-Comparing the general sample with the households declaring their electricity needs not met
+In terms of quantiles of the electricity use distribution, Vietnam households.
+Use VHLSS 2014 as the question about needs met was not asked in 2016 and 2018.
+
+(c) 2016-2021 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 """
 
 from VHLSS_importer import survey
 from scipy.stats import percentileofscore
 
-all_households = survey.loc[survey.year2014, "kwh_last_month"]
+YEAR = 2014
+
+all_households = survey.kwh_last_month[survey.year == YEAR]
 lacking_households = all_households.loc[survey.lacking]
 lt30_households = all_households.loc[survey.low_use]
 hicost_households = all_households.loc[survey.high_cost]
 
+print("\nResults for year", YEAR, "\n")
 print("       Households \tAll      \tNot sufficient electricity")
 print(
     "                  \tn = {:d}\tn = {:d}".format(

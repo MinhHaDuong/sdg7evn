@@ -1,12 +1,4 @@
-# Statistics on energy poverty in Vietnam
-##
-# (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
-#
-# The data summary is shown in "incomeShare.py"
-#
-
-
-"""VHLSS 2008/2010/2012/2014 Vietnam Households surveys analysis - High electricity expense
+"""VHLSS 2008-2018 analysis - Plot housholds with high electricity expense.
 
 Define "High Expense" as "Electricity bill > 6% income"
 
@@ -15,21 +7,26 @@ The surveys asked about annual income estimate.
 
 We display Electricity bill vs. Income for Vietnam households
 with red line defining the 'bill == 6% of income' frontier.
-Households above the line are in High electcitiy expense conodition
+Households above the line are in High electricity expense conodition
+
+Statistics on energy poverty in Vietnam
+(c) 2016-2021 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 """
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-from VHLSS_importer import survey
+from VHLSS_importer import survey, YEARS
 
-fig = plt.figure(figsize=(12, 12))
+fig = plt.figure(figsize=(12, 20))
 
 
-def subfig(yr, n):
-    ax = fig.add_subplot(4, 2, n)
+def subfig(yr, row):
+    num_rows = len(YEARS)
+    ax = fig.add_subplot(num_rows, 2, 2 * row + 1)
     plt.hexbin(
-        survey.loc[survey.year == yr, "inc"] / 1000,
-        survey.loc[survey.year == yr, "elec_year"] / 1000,
+        survey.inc[survey.year == yr] / 1000,
+        survey.elec_year[survey.year == yr] / 1000,
         bins="log",
         cmap="Greys",
         gridsize=500,
@@ -39,21 +36,22 @@ def subfig(yr, n):
     ax.set_ylim([0, 5])
     ax.set_xlim([0, 400])
     x = np.arange(200)
+    if row == num_rows - 1:
+        ax.set_xlabel("Annual income, M VND")
     ax.plot(x, x * 0.06, color="red")
     return ax
 
 
-subfig(2008, 1)
-subfig(2010, 3)
-subfig(2012, 5)
-subfig(2014, 7).set_xlabel("Annual income, M VND")
+for y, year in enumerate(YEARS):
+    subfig(year, y)
 
 
-def subfig2(yr, n):
-    ax = fig.add_subplot(4, 2, n)
+def subfig2(yr, row):
+    num_rows = len(YEARS)
+    ax = fig.add_subplot(len(YEARS), 2, 2 * row + 2)
     plt.hexbin(
-        survey.loc[survey.year == yr, "inc"] / 12,
-        survey.loc[survey.year == yr, "elec_last_month"],
+        survey.inc[survey.year == yr] / 12,
+        survey.elec_last_month[survey.year == yr],
         bins="log",
         cmap="Greys",
         gridsize=500,
@@ -64,12 +62,13 @@ def subfig2(yr, n):
     ax.set_xlim([0, 33000])
     x = np.arange(7000)
     ax.plot(x, x * 0.06, color="red")
+    if row == num_rows - 1:
+        ax.set_xlabel("Monthly income, k VND")
     return ax
 
 
-subfig2(2010, 4)
-subfig2(2012, 6)
-subfig2(2014, 8).set_xlabel("Monthly income, k VND")
+for y, year in enumerate(YEARS[1:]):
+    subfig2(year, y + 1)
 
 plt.savefig("highexpense.png")
 plt.savefig("highexpense-300dpi.png", dpi=300)

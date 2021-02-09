@@ -5,20 +5,20 @@
 PYTHON=python3
 
 # Figures and tables used in the paper
-pythonFiguresNames = ECDspending ECDuse kWhbyIncome effort KPIDiagram blockTariff highexpense mapGrid prices mapUnsatisfaction 
+pythonFiguresNames = ECDspending ECDuse kWhbyIncome effort KPIDiagram blockTariff highexpense mapGrid prices mapSatisfaction 
 odgFiguresNames = block_tariff_example
 
 figuresFiles = $(addsuffix .png,$(pythonFiguresNames) $(odgFiguresNames))
 hiresFiguresFiles = $(addsuffix -300dpi.png,$(pythonFiguresNames)) $(addsuffix .svg,$(odgFiguresNames))
 
-tablesNames = effort KPI satisfaction TariffWinners TariffLIHC kwh_quantiles useDistribution summaryTables
+tablesNames = effort kpi satisfaction kwh_quantiles useDistribution summaryTables
 tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 # Extra figures and tables, used for exploratory data visualization
 moreFiguresNames= boxGrid electricityBills scatterMatrix densitykWh incomeShare separation mapLowUse TariffImpacts TariffCompared
 moreFiguresFiles=$(addsuffix .png,$(moreFiguresNames))
 
-moreTablesNames= crossTables incomeDistribution
+moreTablesNames= TariffWinners TariffLIHC crossTables incomeDistribution
 moreTablesFiles=$(addsuffix .txt,$(moreTablesNames))
 
 figures=$(figuresFiles) $(hiresFiguresFiles) $(moreFiguresFiles)

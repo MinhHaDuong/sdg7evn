@@ -8,7 +8,7 @@
 import matplotlib.pyplot as plt
 from scipy.stats import percentileofscore
 
-from VHLSS_importer import survey, cdf_plot
+from VHLSS_importer import survey, YEARS, cdf_plot
 
 fig = plt.figure(figsize=(5.5, 4.125))
 
@@ -16,28 +16,26 @@ plt.axis([0, 350, 0, 100])
 plt.xlabel("kWh / month")
 plt.ylabel("% Households")
 
-cdf_plot(2014, "kwh_last_month")
-cdf_plot(2012, "kwh_last_month")
-cdf_plot(2010, "kwh_last_month")
+for year in YEARS[1:]:
+    cdf_plot(year, "kwh_last_month")
 
 plt.grid(True)
-plt.legend(["2014", "2012", "2010"], loc=4, frameon=False)
+plt.legend(YEARS[1:], loc="lower right", frameon=False)
 
 kWh = 150
-array = survey.loc[survey.year == 2014, "kwh_last_month"].dropna()
+array = survey.kwh_last_month[survey.year == 2018].dropna()
 percentile = percentileofscore(array, kWh)
 plt.plot([0, kWh, kWh], [percentile, percentile, 0], "grey", linestyle="--", alpha=0.5)
 plt.text(0, percentile, "{:.1f}".format(percentile), alpha=0.5)
 
-note = """In 2014, {:1.1f}% of households
-used less than {:3d} kWh
-in the previous month"""
+note = """In 2018, {:1.1f}% of households
+used less than {:3d} kWh / month"""
 note_text = note.format(percentile, kWh)
 
 plt.annotate(
     note_text,
     xy=(kWh, percentile),
-    xytext=(kWh + 15, percentile - 25),
+    xytext=(kWh + 15, percentile - 15),
     alpha=0.5,
     arrowprops=dict(facecolor="grey", shrink=0.0, width=2),
 )

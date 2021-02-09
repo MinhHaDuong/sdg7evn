@@ -1,5 +1,3 @@
-# Plot the households electricity tariff in Vietnam over time.
-
 """
 Plot the households electricity tariff in Vietnam over time.
 
@@ -15,18 +13,19 @@ from VHLSS_importer import electricity_tariffs, CPI
 # %%
 
 for date in electricity_tariffs.index:
-    CPI.loc[date] = np.nan
+    if date not in CPI.index:
+        CPI.loc[date] = np.nan
 
 CPI.interpolate(method='time', inplace=True)
 
 deflated_tariff = pd.DataFrame()
-base = CPI.at["2002-01-31", "Consumer_Price_Index"][0]
+base = CPI["2002-01-31"][0]
 
 for date in electricity_tariffs.index:
     for block in electricity_tariffs.columns:
         t = electricity_tariffs.at[date, block]
-        d = CPI.at[date, "Consumer_Price_Index"]
-        deflated_tariff.loc[date, block] = t/d*base
+        d = CPI[date]
+        deflated_tariff.loc[date, block] = t / d * base
 
 
 # %%

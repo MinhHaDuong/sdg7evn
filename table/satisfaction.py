@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  9 16:21:58 2017
+"""Tabulate of answers to the question about electricity sufficiency.
 
-@author: haduong
+Use VHLSS 2010-2012-2014.
+The question was not asked in 2016 and 2018.
+
+(c) 2016-2021 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
 """
 import pandas as pd
 
@@ -16,7 +16,7 @@ def freq(reply, year):
     total = counts.loc["All", year]
     amount = counts.loc[reply, year]
     percentage = 100 * amount / total
-    return "{:,.1f}%".format(percentage)
+    return "{:4,.1f}%".format(percentage)
 
 
 def printrow(label, reply):
@@ -25,7 +25,7 @@ def printrow(label, reply):
     )
 
 
-print("Survey year          \t2010\t2012\t2014")
+print("Survey year          \t2010\t    2012\t    2014")
 print(
     "Responses            \tN={}\tN={}\tN={}".format(
         counts.loc["All", 2010.0], counts.loc["All", 2012.0], counts.loc["All", 2014.0]

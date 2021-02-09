@@ -6,29 +6,32 @@
 
 import numpy as np
 
-from VHLSS_importer import survey
+from VHLSS_importer import survey, YEARS
 from mapTinh import plotChoropleths
 
 DEBUG = False
 
 
-def notGridLighting(yr, provinceTinh):
-    responses = survey.loc[
-        (survey.year == yr) & (survey.tinh == provinceTinh), "main_light"
+def grid_lighting(yr, provinceTinh):
+    responses = survey.main_light[
+        (survey.year == yr) & (survey.tinh == provinceTinh)
     ]
     fromGrid = responses[responses == "Main_Grid"].count()
     Nresponses = responses.count()
     if DEBUG:
         print(provinceTinh, "\t", fromGrid, "/", Nresponses)
     if Nresponses:
-        return 1 - fromGrid / Nresponses
+        return fromGrid / Nresponses
     else:
         return np.nan
 
 
+# %%
+
 plotChoropleths(
-    notGridLighting,
-    "%Households not lighting from grid",
+    grid_lighting,
+    "%Households electrified",
     "mapGrid",
-    [2008, 2010, 2012, 2014],
+    YEARS,
+    "magma"
 )

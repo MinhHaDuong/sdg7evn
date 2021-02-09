@@ -61,7 +61,7 @@ def mapTinh(f, ax, title, colormap_name):
         if i in {7, 25, 29, 31, 33, 50}:
             ec = "lightgrey"  # Lower ink density for finely contoured islands provinces
         for pij in range(len(prt)):
-            ptchs.append(Polygon(pts[par[pij] : par[pij + 1]]))
+            ptchs.append(Polygon(pts[par[pij]: par[pij + 1]]))
             ax.add_collection(
                 PatchCollection(ptchs, facecolor=color, edgecolor=ec, linewidths=0.1)
             )
@@ -72,14 +72,13 @@ def mapTinh(f, ax, title, colormap_name):
     return 0
 
 
-def plotChoropleths(f, label, filename, years):
+def plotChoropleths(f, label, filename, years, colormap_name="magma"):
     if not DEBUG:
-        fig = pyplot.figure(figsize=(18, 10), dpi=150)
+        fig = pyplot.figure(figsize=(26, 10), dpi=150)
     else:
-        fig = pyplot.figure(figsize=(9, 5), dpi=50)
+        fig = pyplot.figure(figsize=(13, 5), dpi=50)
     if DEBUG:
         years = [2008]
-    colormap_name = "Greys"
     for yr in years:
         ax = fig.add_subplot(1, len(years), years.index(yr) + 1)
         mapTinh(lambda t: f(yr, t), ax, str(yr), colormap_name)

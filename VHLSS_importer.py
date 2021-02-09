@@ -113,11 +113,16 @@ block_prices_alt = [0, 0, 1925, 1925, 1925, 2500, 2500, 3500, 3500]
 
 # %% Inflation data
 
-# https://www.gso.gov.vn/default_en.aspx?tabid=780
+# https://www.gso.gov.vn/en/px-web/?pxid=E0830&theme=Trade%2C%20Price%20and%20Tourist
 # Monthly consumer price index by Months and Year
 # Year 2000 = 100
+# (*) Data adjusted after revision in 2013, 2014, 2015.
+# Latest update 8/5/2020
+# Matrix E08.30
+# Accessed 2021-02-09
 CPI = pd.DataFrame(
-    [
+    [   100,
+        np.NaN,
         104.30,
         107.60,
         115.90,
@@ -129,11 +134,15 @@ CPI = pd.DataFrame(
         209.64,
         248.60,
         271.49,
-        289.41,
-        301.26,
-        303.16,
+        287.37,
+        299.12,
+        301.01,
+        309.02,
+        319.92,
+        331.23,
+        340.48
     ],
-    index=pd.date_range("2002-01-01", periods=14, freq="A-JAN"),
+    index=pd.date_range("2000-01-01", periods=20, freq="A-JAN"),
     columns=["Consumer_Price_Index"],
 )
 
@@ -143,6 +152,7 @@ CPI = pd.DataFrame(
 
 def gini(list_of_values):
     """Return the Gini coefficient of a distribution.
+
     Gini code lifted from :
     https://planspacedotorg.wordpress.com/2013/06/21/how-to-calculate-gini-coefficient-from-raw-data-in-python/
     See also:  https://en.wikipedia.org/wiki/Gini_coefficient#Calculation for less efficient code
@@ -174,7 +184,6 @@ provinceTinhByID1 = dict(zip(provinces.ID_1, provinces.tinh))
 
 def timefunc(function):
     """Decorate for profiling."""
-
     def f_timer(*args, **kwargs):
         start = time.time()
         result = function(*args, **kwargs)

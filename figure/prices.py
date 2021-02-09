@@ -20,12 +20,13 @@ for date in electricity_tariffs.index:
 CPI.interpolate(method='time', inplace=True)
 
 deflated_tariff = pd.DataFrame()
+base = CPI.at["2002-01-31", "Consumer_Price_Index"][0]
 
 for date in electricity_tariffs.index:
     for block in electricity_tariffs.columns:
-        t = float(electricity_tariffs.loc[date, block])
-        d = float(CPI.loc[date]) / 100
-        deflated_tariff.loc[date, block] = t/d
+        t = electricity_tariffs.at[date, block]
+        d = CPI.at[date, "Consumer_Price_Index"]
+        deflated_tariff.loc[date, block] = t/d*base
 
 
 # %%
@@ -34,7 +35,7 @@ fig = plt.figure(figsize=(11, 5.5))
 
 ax = fig.add_subplot(121)
 
-electricity_tariffs.plot(ax=ax, legend=False)
+electricity_tariffs.plot(ax=ax, legend=False, drawstyle="steps-post")
 
 ax.set_xlabel("")
 ax.set_ylabel("VND / kWh")
@@ -47,7 +48,7 @@ ax.set_title("""Nominal households electricity tariff""")
 
 ax2 = fig.add_subplot(122)
 
-deflated_tariff.plot(ax=ax2)
+deflated_tariff.plot(ax=ax2, drawstyle="steps-post")
 
 ax2.set_xlabel("")
 ax2.set_ylabel("VND / kWh")

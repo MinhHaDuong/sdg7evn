@@ -6,12 +6,12 @@
 # sudo pip3 install matplotlib-venn
 import matplotlib.pyplot as plt
 
-from matplotlib_venn import venn3, venn2
+from matplotlib_venn import venn3
 from matplotlib import gridspec
 
 from VHLSS_importer import survey
 
-#%%
+# %%
 
 # Subsampling to Q12 respondents does not change much the
 # percentages for off_grid, low_use, high_cost
@@ -46,7 +46,7 @@ print(
     + num_poors("en_subsidy", survey.subsidized)
 )
 
-#%%
+# %%
 
 english = {
     "low_use": "Used <30kWh",
@@ -56,14 +56,6 @@ english = {
     "subsidized": "Subsidized",
 }
 
-
-def cover_two(col1, col2, axe):
-    gb = data.groupby([col1, col2]).size()
-    venn2(
-        subsets=(gb[1, 0], gb[0, 1], gb[1, 1]),
-        set_labels=([english[col1], english[col2]]),
-        ax=axe,
-    )
 
 
 def cover3(col1, col2, col3, axe):
@@ -93,16 +85,13 @@ def cover3(col1, col2, col3, axe):
 fig = plt.figure(figsize=(10, 10))
 gs = gridspec.GridSpec(6, 2)
 
-cover_two("subsidized", "low_use", fig.add_subplot(gs[4, 1]))
-cover_two("subsidized", "lacking", fig.add_subplot(gs[4, 0]))
-cover_two("subsidized", "high_cost", fig.add_subplot(gs[5, 0]))
-cover_two("subsidized", "LIHC", fig.add_subplot(gs[5, 1]))
-
-n = cover3("low_use", "lacking", "LIHC", fig.add_subplot(gs[0:4, :]))
+n = cover3("low_use", "lacking", "high_cost", fig.add_subplot(1, 1, 1))
 
 fig.suptitle(
     "Energy poverty in Vietnam Households 2014 survey\n(n=" + str(n) + ")", fontsize=18
 )
+
+plt.tight_layout()
 
 fig.savefig("KPIDiagram.png")
 fig.savefig("KPIDiagram-300dpi.png", dpi=300)

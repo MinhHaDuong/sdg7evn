@@ -59,6 +59,8 @@ survey["Q12"] = survey.elec_poor.cat.remove_categories(["Missing", "Idk"])
 
 survey["year2014"] = survey.year == 2014
 
+survey["poor"] = survey.inc_pov == "Yes"
+
 survey["off_grid"] = survey.main_light.isin(["Local_Elec", "Flame", "Other"])
 
 survey["low_use"] = survey.kwh_last_month <= 30
@@ -72,6 +74,10 @@ survey["effort"] = survey.elec_year / survey.inc
 survey["high_cost_year"] = survey.effort > 0.06
 
 survey["LIHC"] = (survey.high_cost) & (survey.inc_pov == "Yes")
+
+survey["LILU"] = (survey.kwh_last_month <= 50) & (survey.inc_pov == "Yes")
+
+survey["LIVLU"] = (survey.kwh_last_month <= 30) & (survey.inc_pov == "Yes")
 
 survey["subsidized"] = survey.en_subsidy > 0
 

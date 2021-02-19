@@ -43,10 +43,6 @@ def compare(year, column, fs, subsample, heading):
     return whole, subsample
 
 
-compare(2014, "kwh_last_month", "{:.0f} kWh",
-        survey.lacking, "Not sufficient electricity")
-
-
 # %%
 
 

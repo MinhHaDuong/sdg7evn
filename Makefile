@@ -1,11 +1,11 @@
 # Makefile for the VHLSS survey analysis about energy poverty
 #
-# minh.haduong@gmail.com, 2016-2017
+# minh.haduong@gmail.com, 2016-2021
 
 PYTHON=python3
 
 # Figures and tables used in the paper
-pythonFiguresNames = ECDspending ECDuse kWhbyIncome effort KPIDiagram blockTariff highexpense mapGrid prices mapSatisfaction 
+pythonFiguresNames = ECDspending ECDuse kWhbyIncome effort KPIDiagram subsidies blockTariff highexpense mapGrid prices mapSatisfaction 
 odgFiguresNames = block_tariff_example
 
 figuresFiles = $(addsuffix .png,$(pythonFiguresNames) $(odgFiguresNames))

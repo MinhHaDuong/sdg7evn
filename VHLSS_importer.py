@@ -59,6 +59,8 @@ survey["Q12"] = survey.elec_poor.cat.remove_categories(["Missing", "Idk"])
 
 survey["year2014"] = survey.year == 2014
 
+survey["inc_percapita"] = survey.inc / survey["size"]
+
 survey["poor"] = survey.inc_pov == "Yes"
 
 survey["off_grid"] = survey.main_light.isin(["Local_Elec", "Flame", "Other"])

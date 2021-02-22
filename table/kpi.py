@@ -9,30 +9,32 @@ import pandas as pd
 from VHLSS_importer import survey, YEARS
 
 survey["elec_use"] = pd.cut(survey.kwh_last_month, [-100, 30, 3000])
-# Why not use survey.effort ?
 survey["income_share"] = pd.cut(survey.elec_year / survey.inc, [0, 0.06, 1])
 
 
 def cell(kpi, year):
-    """Return the KPI as a formatted string."""
+    """Return the contents of kpi[year] as formatted string percentage."""
     if year in kpi.index:
-        fmt_string = "\t {:4.1f}%"
-        return fmt_string.format(kpi[year])
-    return "\t   NA"
+        return " {:4.1f}%".format(kpi[year])
+    return "   NA "
 
 
-def row(column, complement=False, df=survey):
-    """Return the row as a string."""
-    xtable = pd.crosstab(df[column], df.year, normalize="columns")
+def row(indicator, complement=False, sample=survey):
+    """Return the Key Performance Indicator time series as a string.
+
+    indicator is assumed to be a categorical variable.
+    The KPI is the share of households in the first category.
+    """
+    xtable = pd.crosstab(sample[indicator], sample.year, normalize="columns")
     kpi = 100 * xtable.iloc[0]
     if complement:
         kpi = 100 - kpi
     items = [cell(kpi, year) for year in YEARS]
-    return ''.join(items)
+    return '\t '.join(items)
 
 
 print("""
-            Year         \t 2008 \t 2010 \t 2012 \t 2014 \t 2016 \t 2018
+            Year         \t 2008 \t  2010 \t  2012 \t  2014 \t  2016 \t  2018
 Share of households""")
 print(
     "No grid lighting, Rural",

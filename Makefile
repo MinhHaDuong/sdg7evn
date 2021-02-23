@@ -11,7 +11,7 @@ odgFiguresNames = block_tariff_example
 figuresFiles = $(addsuffix .png,$(pythonFiguresNames) $(odgFiguresNames))
 hiresFiguresFiles = $(addsuffix -300dpi.png,$(pythonFiguresNames)) $(addsuffix .svg,$(odgFiguresNames))
 
-tablesNames = effort kpi satisfaction kwh_quantiles useDistribution summaryTables
+tablesNames = effort kpi satisfaction unmetNeedSubsample useDistribution summaryTables
 tablesFiles = $(addsuffix .txt,$(tablesNames))
 
 # Extra figures and tables, used for exploratory data visualization

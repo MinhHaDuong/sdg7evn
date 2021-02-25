@@ -20,7 +20,7 @@ scatter_matrix(
             "elec_year",
             "inc",
             "inc_ave",
-            "size",
+            "hhsize",
             "edu_max",
             "sq_m",
             "assets",

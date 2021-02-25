@@ -1,9 +1,3 @@
-# Statistics on energy poverty in Vietnam
-##
-# (c) 2016 Minh Ha-Duong, CNRS, CC-ATTRIBUTION-SHAREALIKE
-#
-#
-
 """Exploring VHLSS 2010/2012/2014 survey results, about on energy poverty
 
 Multidimentional plot on what is energy poverty:
@@ -14,13 +8,17 @@ Red: electricity needs not met
 Blue: all others
 """
 import matplotlib.pyplot as plt
+from pandas.plotting import radviz
 
 from VHLSS_importer import survey
 
 
+# %%
+# Effort is not well correlated with insufficient electricity
+
 def subfig(yr):
-    x = survey.loc[survey.year == yr, "effort"]
-    y = survey.loc[survey.year == yr, "size"]
+    x = survey.effort[survey.year == yr]
+    y = survey.hhsize[survey.year == yr]
     plt.scatter(x[~survey.lacking], y[~survey.lacking], color="blue")
     plt.scatter(x[survey.lacking], y[survey.lacking], color="red", alpha=0.3)
 
@@ -50,13 +48,17 @@ ax.set_ylim([1, 16])
 plt.savefig("separation.png")
 plt.close(fig)
 
-#%%
-from pandas.plotting import radviz
+# %%
+# RadViz allow to project a N-dimensional data set into a 2D space
+# where the influence of each dimension can be interpreted as
+# a balance between the influence of all dimensions.
+# https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.135.889
+#
 
 plt.figure(figsize=(10, 10))
 radviz(
     survey.loc[
-        survey.year == 2014, ["elec_last_month", "inc", "size", "Q12", "sq_m"]
+        survey.year == 2014, ["elec_last_month", "inc", "hhsize", "Q12", "sq_m"]
     ].dropna(),
     "Q12",
 )

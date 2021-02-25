@@ -18,37 +18,7 @@ from VHLSS_importer import survey
 
 data = survey[(survey.year == 2014) & survey.elec_poor.notnull()]
 
-
-def num_poors(column, definition):
-    answers = data.loc[:, column].count()
-    poors = data.loc[definition, column].count()
-    return "\t{:4.1f}% \t{:4d} \t{:d}".format(100 * poors / answers, poors, answers)
-
-
-print("Energy poverty criteria in 2014, Vietnam Households having answered Q12")
-print()
-print("Criteria                               \tShare\tMatches\tAnswers")
-
-print(
-    "Did not use main grid for lighting     " + num_poors("main_light", survey.off_grid)
-)
-print(
-    "Used less than 30 kWh last month       "
-    + num_poors("kwh_last_month", survey.low_use)
-)
-print("Electricity expenses > 6% income       " + num_poors("effort", survey.high_cost))
-print("Low income High cost                   " + num_poors("effort", survey.LIHC))
-print(
-    "Electricity did not meet needs         " + num_poors("elec_poor", survey.lacking)
-)
-print(
-    "Received electricity subsidy           "
-    + num_poors("en_subsidy", survey.subsidized)
-)
-
-# %%
-
-english = {
+label = {
     "low_use": "Used <30kWh",
     "lacking": "Needs not met",
     "high_cost": "Bill > 6% income",
@@ -57,10 +27,9 @@ english = {
 }
 
 
-
 def cover3(col1, col2, col3, axe):
     gb = data.groupby([col1, col2, col3]).size()
-    # Handle exception when the 3-way intersectoin is empty
+    # Handle exception when the 3-way intersection is empty
     try:
         gb[1, 1, 1]
     except KeyError:
@@ -75,7 +44,7 @@ def cover3(col1, col2, col3, axe):
             gb[0, 1, 1],
             gb[1, 1, 1],
         ),
-        set_labels=([english[col1], english[col2], english[col3]]),
+        set_labels=([label[col1], label[col2], label[col3]]),
         ax=axe,
     )
     axe.text(-0.6, -0.5, "All other: " + str(gb[0, 0, 0]) + " replies")

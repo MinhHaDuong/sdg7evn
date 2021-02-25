@@ -1,3 +1,11 @@
+"""Compute the distributional consequences of applying a more progressive tariff.
+
+On the electricity bills of households,
+Based on the declared March bill in VHLSS 2014 <-- *** Warning ***
+
+How many households would see their electricity bill decrease/increase, among the energy poors
+for different definitions of energy poor
+
 # Statistics on energy poverty in Vietnam
 # based on VHLSS 2010/2012/2014 survey data
 #
@@ -6,11 +14,6 @@
 # Created on Thu Sep 22 13:50:53 2016
 #
 
-"""Computes the distributional consequences of applying a more progressive tariff
-on the electricity bills of households, based on the declared March bill in VHLSS 2014
-
-How many households would see their electricity bill decrease/increase, among the energy poors
-for different definitions of energy poor
 """
 import numpy as np
 
@@ -28,7 +31,7 @@ block_costs_alt = block_sizes * block_prices_alt[1:] / 1000
 total_bills_alt = np.cumsum(np.insert(block_costs_alt, 0, 0))
 
 
-#%%
+# %%
 
 df = survey.loc[
     (survey.year == YEAR) & (survey.elec_poor.notnull()),
@@ -38,7 +41,7 @@ df = survey.loc[
         "elec_last_month",
         "elec_poor",
         "inc_pov",
-        "size",
+        "hhsize",
         "urb_rur",
     ],
 ]
@@ -48,11 +51,11 @@ df["change"] = df.bill_alt - df.elec_last_month
 df["high_cost"] = df.elec_last_month / (df.inc / 12) > 0.06
 df["high_cost_expost"] = df.bill_alt / (df.inc / 12) > 0.06
 
-df["income_percapita_permonth"] = df.inc / df.loc[:, "size"] / 12
+df["income_percapita_permonth"] = df.inc / df.hhsize / 12
 
 df["low_income"] = df.income_percapita_permonth < 400 + 100 * (df.urb_rur == "Urban")
 
-#%%
+# %%
 
 
 def impact_categories(query_expr):

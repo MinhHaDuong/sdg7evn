@@ -26,7 +26,7 @@ numericalColumns = (
     "elec_year",
     "inc",
     "inc_ave",
-    "size",
+    "hhsize",
     "edu_max",
     "assets",
     "sq_m",

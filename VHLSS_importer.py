@@ -38,9 +38,9 @@ survey.kwh_last_month = clip(survey.kwh_last_month)
 survey.elec_year = clip(survey.elec_year)
 survey.inc = clip(survey.inc)
 survey.inc_ave = clip(survey.inc_ave)
-survey["size"] = clip(survey["size"])
 survey.sq_m = clip(survey.sq_m)
 survey.assets = clip(survey.assets)
+survey["hhsize"] = clip(survey["size"])  # Name  survey.size  already taken
 
 # Relabel in English
 # tcvn3 encoding is not supported in python3 / Ubuntu 16.04
@@ -57,9 +57,7 @@ survey["Q12"] = survey.elec_poor.cat.remove_categories(["Missing", "Idk"])
 
 # %% Energy poverty criteria
 
-survey["year2014"] = survey.year == 2014
-
-survey["inc_percapita"] = survey.inc / survey["size"]
+survey["effort"] = survey.elec_year / survey.inc
 
 survey["poor"] = survey.inc_pov == "Yes"
 
@@ -70,8 +68,6 @@ survey["low_use"] = survey.kwh_last_month <= 30
 survey["lacking"] = survey.elec_poor == "Lacking"
 
 survey["high_cost"] = survey.elec_last_month / (survey.inc / 12) > 0.06
-
-survey["effort"] = survey.elec_year / survey.inc
 
 survey["high_cost_year"] = survey.effort > 0.06
 

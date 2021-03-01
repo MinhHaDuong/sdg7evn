@@ -57,7 +57,7 @@ survey["Q12"] = survey.elec_poor.cat.remove_categories(["Missing", "Idk"])
 
 # %% Energy poverty criteria
 
-survey["effort"] = survey.elec_year / survey.inc
+survey["effort"] = survey.elec_year.fillna(0) / survey.inc
 
 survey["poor"] = survey.inc_pov == "Yes"
 

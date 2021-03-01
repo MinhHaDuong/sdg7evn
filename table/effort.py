@@ -24,7 +24,7 @@ def summary_stat(year):
 
     sample_size = len(effort)
     pay_nothing = fmt(len(effort[effort <= 0.001]) / sample_size)
-    pay_much = fmt(len(effort[effort >= 0.06]) / sample_size)
+    pay_much = fmt(len(effort[effort > 0.06]) / sample_size)
     median = fmt(effort.quantile(0.5))
     top_vintile = fmt(effort.quantile(0.95))
     return pay_nothing, pay_much, median, top_vintile
@@ -36,8 +36,8 @@ labels = [
     "Half of households pay less than",
     "95% of households pay less than "
 ]
-contents = [summary_stat(year) for year in YEARS[1:]]
-table = pd.DataFrame(contents, index=YEARS[1:], columns=labels).transpose()
+contents = [summary_stat(year) for year in YEARS]
+table = pd.DataFrame(contents, index=YEARS, columns=labels).transpose()
 
 pd.set_option('display.max_columns', len(YEARS))
 pd.set_option('display.width', 150)

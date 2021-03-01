@@ -8,42 +8,49 @@ import pandas as pd
 
 from VHLSS_importer import survey, YEARS
 
-survey["elec_use"] = pd.cut(survey.kwh_last_month, [-100, 30, 3000])
-survey["income_share"] = pd.cut(survey.elec_year / survey.inc, [0, 0.06, 1])
+
+def fmt(sample, selector):
+    """Return the percentage of matches in the data, as a string."""
+    data = sample.dropna()
+    size = len(data)
+    if size == 0:
+        return "NA"
+    matches = len(data[selector])
+    return "{:4.1f}%".format(100 * matches / size)
 
 
-def cell(kpi, year):
-    """Return the contents of kpi[year] as formatted string percentage."""
-    if year in kpi.index:
-        return " {:4.1f}%".format(kpi[year])
-    return "   NA "
+def summary_stat(year):
+    """Return key performance indicators for a given year."""
+    sample = survey[survey.year == year]
+
+    lrural = sample.main_light[sample.urb_rur == "Rural"]
+    nogrid_rural = fmt(lrural, lrural != "Main_Grid")
+
+    lurban = sample.main_light[sample.urb_rur == "Urban"]
+    nogrid_urban = fmt(lurban, lurban != "Main_Grid")
+
+    use = sample.kwh_last_month
+    low_use = fmt(use, use < 30)
+
+    effort = sample.effort
+    pay_much = fmt(effort, effort > 0.06)
+
+    satisfaction = sample.elec_poor
+    needs_unmet = fmt(satisfaction, satisfaction == "Lacking")
+
+    return nogrid_rural, nogrid_urban, low_use, pay_much, needs_unmet
 
 
-def row(indicator, complement=False, sample=survey):
-    """Return the Key Performance Indicator time series as a string.
+labels = [
+    "No grid, rural",
+    "No grid, urban",
+    "Use < 30kWh / month",
+    "Bill > 6% income",
+    "Needs not met"
+]
+contents = [summary_stat(year) for year in YEARS]
+table = pd.DataFrame(contents, index=YEARS, columns=labels).transpose()
 
-    indicator is assumed to be a categorical variable.
-    The KPI is the share of households in the first category.
-    """
-    xtable = pd.crosstab(sample[indicator], sample.year, normalize="columns")
-    kpi = 100 * xtable.iloc[0]
-    if complement:
-        kpi = 100 - kpi
-    items = [cell(kpi, year) for year in YEARS]
-    return '\t '.join(items)
-
-
-print("""
-            Year         \t 2008 \t  2010 \t  2012 \t  2014 \t  2016 \t  2018
-Share of households""")
-print(
-    "No grid lighting, Rural",
-    row("main_light", True, survey[survey.urb_rur == "Rural"]),
-)
-print(
-    "No grid lighting, Urban",
-    row("main_light", True, survey[survey.urb_rur == "Urban"]),
-)
-print("Use < 30 kWh / month   ", row("elec_use"))
-print("Bill > 6% income       ", row("income_share", True))
-print("Use does not meet needs", row("elec_poor"))
+pd.set_option('display.max_columns', len(YEARS))
+pd.set_option('display.width', 150)
+print(table)

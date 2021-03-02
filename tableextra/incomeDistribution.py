@@ -4,7 +4,7 @@
 #
 #
 
-from VHLSS_importer import survey, gini, CPI
+from VHLSS_importer import survey, gini, CPI, YEARS
 
 
 def cdf(yr):
@@ -15,14 +15,9 @@ def cdf(yr):
     print("\nNominal amounts (M VND per year)")
     print(d.describe())
     print("\nDeflated to 2014 (M VND per year)")
-    deflator = float(CPI.Consumer_Price_Index["2014"]) / float(
-        CPI.Consumer_Price_Index[str(yr)]
-    )
+    deflator = float(CPI["2014"]) / float(CPI[str(yr)])
     dd = d * deflator
     print(dd.describe())
 
 
-cdf(2008)
-cdf(2010)
-cdf(2012)
-cdf(2014)
+[cdf(y) for y in YEARS]

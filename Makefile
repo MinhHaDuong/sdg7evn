@@ -5,7 +5,7 @@
 PYTHON=python3
 
 # Figures and tables used in the paper
-pythonFiguresNames = ECDspending ECDuse effort KPIDiagram subsidies highexpense mapGrid prices mapSatisfaction 
+pythonFiguresNames = ECDspending ECDuse effort KPIDiagram subsidies highexpense mapGrid prices inequalities mapSatisfaction 
 odgFiguresNames = block_tariff_example
 
 figuresFiles = $(addsuffix .png,$(pythonFiguresNames) $(odgFiguresNames))

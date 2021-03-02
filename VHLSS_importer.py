@@ -57,6 +57,10 @@ survey["Q12"] = survey.elec_poor.cat.remove_categories(["Missing", "Idk"])
 
 # %% Energy poverty criteria
 
+# We replace NaN by zeroes in elec_years on the ground that:
+# In 2008 there are 316 NaN and 2 zeroes.
+# In 2010-2018 there are less than 12 NaN and more than 99 zeroes
+# and we know that the survey methods changed between 2008 and 2010
 survey["effort"] = survey.elec_year.fillna(0) / survey.inc
 
 survey["poor"] = survey.inc_pov == "Yes"

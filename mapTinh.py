@@ -68,7 +68,7 @@ def mapTinh(f, ax, title, colormap_name):
     ax.set_xlim(+102, +111)
     ax.set_ylim(+8, +23.3)
     ax.axis("off")
-    ax.set_title(title)
+    ax.set_title(title, fontsize=24)
     return 0
 
 
@@ -85,8 +85,8 @@ def plotChoropleths(f, label, filename, years, colormap_name="magma"):
     cbaraxes = fig.add_axes([0.05, 0.15, 0.02, 0.7])
     cbar = colorbar.ColorbarBase(cbaraxes, cmap=get_cmap(colormap_name))
     cbar.set_ticks([0.0, 0.2, 0.4, 0.6, 0.8, 1])
-    cbar.set_ticklabels(["0%", "20%", "40%", "60%", "80%", "100%"])
-    cbar.set_label(label)
+    cbar.ax.set_yticklabels(["0%", "20%", "40%", "60%", "80%", "100%"], fontsize=24)
+    cbar.set_label(label, fontsize=24)
     if not DEBUG:
         fig.savefig(filename + ".png")
         fig.savefig(filename + "-300dpi.png", dpi=300)

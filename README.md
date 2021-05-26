@@ -4,7 +4,8 @@ Is electricity affordable and reliable for all in Vietnam - analysis of househol
 This python code analyzes VHLSS results regarding to energy poverty.
 
 Requirements:
-  Python3 with SciPy stack (pandas >= 18.1, numpy, matplotlib, matplotlib_venn, statsmodels)
+  Python3 with SciPy stack (pandas >= 18.1, numpy, matplotlib, statsmodels)
+  Python3 libraries pyshp, matplotlib_venn
   make
   Preprocessed VHLSS data located in   ../data/Processed_data
   Shapefiles for Vientam provinces located in  ../data/VNM_adm_shp
